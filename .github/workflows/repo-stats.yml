@@ -22,10 +22,9 @@ jobs:
         TRAFFIC_ACTION_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         REPOSITORY_NAME: "pytorch/examples"
 
-    - name: Commit changes
-      uses: EndBug/add-and-commit@v4
+    - name: push
+      uses: actions-x/commit@v6    
       with:
-        author_name: Svetlana Karslioglu
-        message: "GitHub traffic"
-        add: "./"
-        ref: "github-repo-stats"
+        branch: github-repo-stats
+        directory: .
+        token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
