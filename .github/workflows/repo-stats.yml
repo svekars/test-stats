@@ -21,10 +21,12 @@ jobs:
       env:
         TRAFFIC_ACTION_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         REPOSITORY_NAME: "pytorch/examples"
-
+    - name: pull
+      run: |
+        git pull 
     - name: push
       uses: actions-x/commit@v6    
-      with:
-        branch: github-repo-stats
+      with: 
+        branch: master
         directory: .
         token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
