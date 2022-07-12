@@ -20,9 +20,6 @@ jobs:
       env:
         TRAFFIC_ACTION_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         REPOSITORY_NAME: "pytorch/examples"
-    - name: pull
-      run: |
-        git pull origin github-repo-stats --allow-unrelated-histories 
     - name: push
       uses: actions-x/commit@v6    
       with: 
