@@ -27,6 +27,6 @@ jobs:
     - name: push
       uses: actions-x/commit@v6    
       with: 
-        branch: master
-        directory: .
+        branch: main
+        directory: ./traffic
         token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
