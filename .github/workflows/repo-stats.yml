@@ -12,9 +12,8 @@ jobs:
     name: github-repo-stats
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: "github-repo-stats"
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Collect traffic
       uses: sangonzal/repository-traffic-action@v.0.1.6
