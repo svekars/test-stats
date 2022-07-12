@@ -15,6 +15,6 @@ jobs:
       - name: set envs
         uses: jgehrcke/github-repo-stats@v1.4.1
         with:
-          repository: https://github.com/pytorch/examples
+          repository: pytorch/examples
           # databranch: github-repo-stats 
           ghtoken: ${{ secrets.ghrs_github_api_token }}
