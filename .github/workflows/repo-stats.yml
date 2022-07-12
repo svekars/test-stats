@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: set envs
-        uses: jgehrcke/github-repo-stats@v1.4.1
+        uses: jgehrcke/github-repo-stats@v1.0.0
         with:
           repository: pytorch/examples
           # databranch: github-repo-stats 
