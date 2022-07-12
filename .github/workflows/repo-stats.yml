@@ -23,10 +23,10 @@ jobs:
         REPOSITORY_NAME: "pytorch/examples"
     - name: pull
       run: |
-        git pull 
+        git pull origin github-repo-stats --allow-unrelated-histories 
     - name: push
       uses: actions-x/commit@v6    
       with: 
-        branch: main
+        branch: github-repo-stats
         directory: ./traffic
         token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
