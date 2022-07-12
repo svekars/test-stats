@@ -25,7 +25,7 @@ jobs:
     - name: Commit changes
       uses: EndBug/add-and-commit@v4
       with:
-        author_name: SK
+        author_name: Svetlana Karslioglu
         message: "GitHub traffic"
-        add: "./traffic/*"
-        ref: "github-repo-stats"  # commits to branch "traffic"
+        add: "./"
+        ref: "github-repo-stats"
