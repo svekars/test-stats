@@ -20,7 +20,6 @@ jobs:
           INPUT_GHPAGESPREFIX: none
           GHRS_TESTING: true
           GHRS_FILES_ROOT_PATH: /
-      - name: run-ghrs
         # Use latest release.
         uses: jgehrcke/github-repo-stats@v1.4.1
         with:
