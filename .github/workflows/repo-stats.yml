@@ -4,17 +4,28 @@ on:
   schedule:
     # Run this once per day, towards the end of the day for keeping the most
     # recent data point most meaningful (hours are interpreted in UTC).
-    - cron: "0 23 * * *"
+    - cron: "55 23 * * 0"
   workflow_dispatch: # Allow for running this manually.
 
 jobs:
-  j1:
+  traffic:
     name: github-repo-stats
     runs-on: ubuntu-latest
     steps:
-      - name: set envs
-        uses: jgehrcke/github-repo-stats@v1.0.0
-        with:
-          repository: pytorch/examples
-          # databranch: github-repo-stats 
-          ghtoken: ${{ secrets.ghrs_github_api_token }}
+    - uses: actions/checkout@v2
+      with:
+        ref: "github-repo-stats"
+
+    - name: Collect traffic
+      uses: sangonzal/repository-traffic-action@v.0.1.6
+      env:
+        TRAFFIC_ACTION_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+        REPOSITORY_NAME: "pytorch/examples"
+
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v4
+      with:
+        author_name: SK
+        message: "GitHub traffic"
+        add: "./traffic/*"
+        ref: "github-repo-stats"  # commits to branch "traffic"
