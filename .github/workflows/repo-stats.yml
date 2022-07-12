@@ -23,6 +23,6 @@ jobs:
     - name: push
       uses: actions-x/commit@v6    
       with: 
-        branch: github-repo-stats
+        branch: master
         directory: ./traffic
         token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
