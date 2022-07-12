@@ -16,5 +16,6 @@ jobs:
         # Use latest release.
         uses: jgehrcke/github-repo-stats@v1.4.1
         with:
-          repository: pytorch/examples
+          repository: pytorch/tutorials
+          databranch: databranch-test
           ghtoken: ${{ secrets.ghrs_github_api_token }}
