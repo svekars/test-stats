@@ -13,16 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: set envs
-        env:
-          INPUT_GHTOKEN: ${{ secrets.ghrs_github_api_token }}
-          INPUT_DATABRANCH: github-repo-stats
-          INPUT_REPOSITORY: pytorch/examples
-          INPUT_GHPAGESPREFIX: none
-          GHRS_TESTING: true
-          GHRS_FILES_ROOT_PATH: /
-        # Use latest release.
         uses: jgehrcke/github-repo-stats@v1.4.1
         with:
-          repository: pytorch/examples
+          repository: https://github.com/pytorch/examples
           # databranch: github-repo-stats 
           ghtoken: ${{ secrets.ghrs_github_api_token }}
