@@ -12,9 +12,10 @@ jobs:
     name: github-repo-stats
     runs-on: ubuntu-latest
     steps:
+    - name: Run pull request stats
+      uses: flowwer-dev/pull-request-stats@master
     - name: Checkout
       uses: actions/checkout@v2
-
     - name: Collect traffic
       uses: sangonzal/repository-traffic-action@v.0.1.6
       env:
@@ -26,6 +27,3 @@ jobs:
         branch: main
         directory: ./traffic
         token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
-    - name: Run pull request stats
-        uses: flowwer-dev/pull-request-stats@master
-    
