@@ -3,6 +3,7 @@ name: Labeler
 on:
   schedule:
     - cron: "0 */4 * * *"
+  workflow_dispatch: # Allow for running this manually.
 
 jobs:
   generate_content_label:
