@@ -12,10 +12,6 @@ jobs:
     name: github-repo-stats
     runs-on: ubuntu-latest
     steps:
-    - name: User Nutrition Label
-      uses: lbonanomi/nutrition-label@1.4
-      with:
-        token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
     - name: Checkout
       uses: actions/checkout@v2
     - name: Collect traffic
