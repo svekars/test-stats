@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Page Ge
 
 # Controls when the workflow will run
 on:
@@ -33,5 +33,5 @@ jobs:
         uses: actions-x/commit@v6    
         with: 
           branch: main
-          directory: ./age
+          directory: ./
           token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
