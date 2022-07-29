@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run script
         run: |
-          cd /test-stats
+          ls
           git ls-tree -r master --name-only | grep -E '.*\.(md|csv|svg)' | while read filename; do 
            echo "$(git log -1 --date=short --format="%ad" -- $filename) $filename";
           done | sort -r | tr  " " ","  > file.csv
