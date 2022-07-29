@@ -24,10 +24,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Run script
-        run: |
-          git ls-tree -r main --name-only | grep -E '.*\.(md|csv|svg)' | while read filename; do
-           echo "$(git log -1 --date=short --format="%ad" -- $filename) $filename";
-          done | sort -r | tr  " " ","  > file.csv
+        run: ./page-age-script.sh
       # Runs a set of commands using the runners shell
       - name: push
         uses: actions-x/commit@v6    
