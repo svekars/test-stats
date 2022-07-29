@@ -24,7 +24,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Make script executable
-      - run: chmod +x .github/workflows/page-age-script.sh
+        run: chmod +x .github/workflows/page-age-script.sh
       - name: Run script
         run: .github/workflows/page-age-script.sh
       # Runs a set of commands using the runners shell
