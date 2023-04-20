@@ -55,7 +55,7 @@
 	
 	<line	x1="15"	y1="335" x2="245" y2="335" style="stroke:rgb(0,0,0);stroke-width:2" />
 	<text	x="15"	y="355" font-family="Helvetica" font-weight="bold"	lengthAdjust="spacingAndGlyphs">Python</text>
-	<text	x="75"	y="355" font-family="Helvetica" 						lengthAdjust="spacingAndGlyphs">1 KB</text>
+	<text	x="75"	y="355" font-family="Helvetica" 						lengthAdjust="spacingAndGlyphs">2 KB</text>
 	<text	x="245"	y="355" font-family="Helvetica"						lengthAdjust="spacingAndGlyphs"	text-anchor="end">%</text>
 	
 	<line x1="15" y1="365" x2="244" y2="365" style="stroke:rgb(0,0,0);stroke-width:4" />
