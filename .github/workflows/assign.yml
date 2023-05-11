@@ -16,7 +16,7 @@ jobs:
         run: |
           npm i @octokit/core @octokit/rest
       - name: Check for "/assigntome" in comment
-        uses: actions/github-script@v3.1.0
+        uses: actions/github-script@v4
         env:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
