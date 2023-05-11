@@ -11,7 +11,7 @@ jobs:
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v3.1.0
         with:
-          githib-token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+          repo-token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
           script: | 
             const issueComment = context.payload.comment.body;
             const assignRegex = /\/assigntome/i;
