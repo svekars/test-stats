@@ -17,12 +17,12 @@ jobs:
             const issueComment = context.payload.comment.body;
             const assignRegex = /\/assigntome/i;
             if assignRegex.test(issueComment)) {
-            const assignee = context.payload.comment.user.login;
-            const issueNumber = context.payload.issue.number;
-            const octokit = require('@octokit/rest')();
-            octokit.authenticate({
-              type: 'token',
-              token: process.env.GITHUB_TOKEN
+              const assignee = context.payload.comment.user.login;
+              const issueNumber = context.payload.issue.number;
+              const octokit = require('@octokit/rest')();
+              octokit.authenticate({
+                type: 'token',
+                token: process.env.GITHUB_TOKEN
             });
             octokit.issues.addAssignees({
               owner: context.repo.owner,
@@ -30,4 +30,4 @@ jobs:
               issue_number: issueNumber,
               assignees: [assignee]
             });
-          }
+           }
