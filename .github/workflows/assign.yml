@@ -2,7 +2,7 @@ name: Assign User on Comment
 
 on:
   issue_comment:
-    types:[created]
+    types: [created]
 
 jobs:
   assign:
@@ -11,7 +11,7 @@ jobs:
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v4
         with:
-          token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+          githib-token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
           script: | 
             const issueComment = context.payload.comment.body;
             const assignRegex = /\/assigntome/i;
