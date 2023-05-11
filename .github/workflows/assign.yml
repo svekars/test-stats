@@ -8,6 +8,9 @@ jobs:
   assign:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Dependencies
+        run: |
+          npm install @octokit/core
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v3.1.0
         env:
