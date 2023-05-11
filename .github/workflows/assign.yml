@@ -10,8 +10,9 @@ jobs:
     steps:
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v3.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
-          token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
           script: | 
             const issueComment = context.payload.comment.body;
             const assignRegex = /\/assigntome/i;
