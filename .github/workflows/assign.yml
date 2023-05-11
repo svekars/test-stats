@@ -20,7 +20,7 @@ jobs:
               const assignee = context.payload.comment.user.login;
               const issueNumber = context.payload.issue.number;
               const { Octokit } = require("@octokit/core");
-              const octokit = new Octokit({ auth process.env.GITHUB_TOKEN });
+              const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
               octokit.rest.issues.addAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
