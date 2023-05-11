@@ -26,9 +26,9 @@ jobs:
             if (assignRegex.test(issueComment)) {
               const assignee = context.payload.comment.user.login;
               const issueNumber = context.payload.issue.number;
-              const { Octokit } = require("@octokit/core");
+              const { Octokit } = require("@octokit/rest");
               const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-              octokit.rest.issues.addAssignees({
+              octokit.issues.addAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNumber,
