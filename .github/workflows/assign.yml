@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
-        run: npm install @octokit/rest@18.14.1
+        run: npm install @octokit/rest
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v3.1.0
         env:
