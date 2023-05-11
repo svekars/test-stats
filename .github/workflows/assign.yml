@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Dependencies
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install @octokit/core
         run: |
           npm install @octokit/core
       - name: Check for "/assigntome" in comment
