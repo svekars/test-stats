@@ -15,12 +15,13 @@ jobs:
           node-version: "14"
       - name: Install dependencies
         run: npm i @octokit/core @octokit/rest
-
+      - name: Install @actions/core
+        run: npm i @actions/core
       - name: Check comments and post Comment
         run: |
           node <<EOF
-          const core = require('@actions/core');
-          const { Octokit } = require('octokit/rest');
+          const core = require("@actions/core");
+          const { Octokit } = require("@octokit/rest");
 
           try {
             const octokit = new Octokit({
