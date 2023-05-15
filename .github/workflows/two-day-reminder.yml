@@ -9,8 +9,15 @@ jobs:
   check-assignment:
     runs-on: ubuntu-latest
     steps:
-      - name: Checl for "/assigntome" in comment
-        uses: actions/github-script@3.1.0
+      - name: Install Dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install @octokit/rest
+        run: |
+          npm i @octokit/core @octokit/rest
+      - name: Check for "/assigntome" in comment
+        uses: actions/github-script@4
         env:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
