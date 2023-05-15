@@ -16,6 +16,9 @@ jobs:
       - name: Install @octokit/rest
         run: |
           npm i @octokit/core @octokit/rest
+      - name: Install @actions/github
+        run: |
+          npm i @actions/github
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v4
         env:
