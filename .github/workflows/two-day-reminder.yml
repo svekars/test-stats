@@ -31,7 +31,7 @@ jobs:
               const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
               
               const { github, repo } = require("@actions/github");
-              const { owner, repo: repository} = repo;
+              const { owner, repo: repository } = repo;
               
               const { data: comments } = await octokit.issues.listComments({
                 owner,
