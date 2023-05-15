@@ -1,7 +1,6 @@
 name: Reminder to submit PR
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: "0 */12 * * *"
 
@@ -12,11 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Check comments and post updates
+      - name: Comment Checker
         uses: actions/github-script@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const twoDaysAgo = new Date();
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
@@ -53,7 +51,7 @@ jobs:
                 const assignMeCommentDate = comments.find(comment => comment.body.includes("/assigntome"))?.created_at;
 
                 if (hasAssignMeComment) {
-                  const hasSubmitPRComment = comments.some(comment => comment.body.includes("Please submit a PR ASAP."));
+                  const hasSubmitPRComment = comments.some(comment => comment.body.includes("Submit a PR"));
 
                   if (!hasSubmitPRComment) {
                     const commentDate = new Date(assignMeCommentDate);
