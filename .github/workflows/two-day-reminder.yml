@@ -12,74 +12,59 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Check comments and post updates
+        uses: actions/github-script@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
-          node-version: 14
+          script: |
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-      - name: Install dependencies
-        run: npm install @actions/core @octokit/request@5
+            // Function to check if a comment with the same content has been posted
+            async function isCommentAlreadyPosted(issueNumber, commentBody) {
+              const comments = await getComments(issueNumber);
+              return comments.some(comment => comment.body === commentBody);
+            }
 
-      - name: Comment Checker
-        run: |
-          const core = require('@actions/core');
-          const { request } = require('@octokit/request');
+            async function getComments(issueNumber) {
+              const response = await github.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber
+              });
+              return response.data;
+            }
 
-          const twoDaysAgo = new Date();
-          twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            async function postComment(issueNumber, body) {
+              await github.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: body
+              });
+            }
 
-          async function getComments(owner, repo, issueNumber) {
-            const response = await request('GET /repos/{owner}/{repo}/issues/{issue_number}/comments', {
-              owner: owner,
-              repo: repo,
-              issue_number: issueNumber
-            });
-            return response.data;
-          }
+            async function checkIssueComments() {
+              const response = await github.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open'
+              });
+              const issues = response.data;
+              for (const issue of issues) {
+                const comments = await getComments(issue.number);
+                const commentBody = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                const commentAlreadyPosted = await isCommentAlreadyPosted(issue.number, commentBody);
+                const commentDate = new Date(comments[0]?.created_at);
 
-          async function postComment(owner, repo, issueNumber, body) {
-            await request('POST /repos/{owner}/{repo}/issues/{issue_number}/comments', {
-              owner: owner,
-              repo: repo,
-              issue_number: issueNumber,
-              body: body
-            });
-          }
-
-          async function checkIssueComments() {
-            const owner = process.env.GITHUB_REPOSITORY_OWNER;
-            const repo = process.env.GITHUB_REPOSITORY;
-
-            const response = await request('GET /repos/{owner}/{repo}/issues', {
-              owner: owner,
-              repo: repo,
-              state: 'open'
-            });
-
-            const issues = response.data;
-            for (const issue of issues) {
-              const comments = await getComments(owner, repo, issue.number);
-              const hasAssignMeComment = comments.some(comment => comment.body.includes("/assigntome"));
-              const assignMeCommentDate = comments.find(comment => comment.body.includes("/assigntome"))?.created_at;
-
-              if (hasAssignMeComment) {
-                const hasSubmitPRComment = comments.some(comment => comment.body.includes("Submit a PR"));
-
-                if (!hasSubmitPRComment) {
-                  const commentDate = new Date(assignMeCommentDate);
-                  if (commentDate < twoDaysAgo) {
-                    const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
-                    await postComment(owner, repo, issue.number, message);
-                  }
+                if (commentAlreadyPosted) {
+                  console.log(`Comment has already been posted on issue ${issue.number}`);
+                } else if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
+                  const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                  await postComment(issue.number, message);
                 }
               }
             }
-          }
 
-          checkIssueComments()
-            .then(() => {
-              console.log('Comment check completed.');
-            })
-            .catch((error) => {
-              core.setFailed(`Comment check failed: ${error}`);
-            });
+            await checkIssueComments();
