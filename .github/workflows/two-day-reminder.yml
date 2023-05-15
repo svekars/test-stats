@@ -1,0 +1,40 @@
+name: Reminder to submit PR
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"
+  
+jobs:
+  check-assignment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checl for "/assigntome" in comment
+        uses: actions/github-script@3.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+        with:
+          script: | 
+            const issueComment = context.payload.comment.body;
+            const assignRegex = /\/assigntome/i;
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            
+            if (assignRegex.test(issueComment)) {
+              const commentCreatedAt = new Date(context.payload.comment.created_at):
+              
+              if (commentCreatedAt < twoDaysAgo && !context.payload.issue.pull_request) {
+                const { Octokit } = require("@octokit/rest");
+                const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
+                const issueNumber = contenxt.payload.issue.number;
+                const newCommentBody = "This issue was assigned more than 2 days ago. Please submit a PR ASAP."
+                octokit.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: content.repo.repo,
+                  issue_number: issueNumber,
+                  body: newCommentBody
+                });
+              }
+            }
+             
+        
