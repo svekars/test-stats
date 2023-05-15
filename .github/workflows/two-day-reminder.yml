@@ -4,30 +4,37 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 */12 * * *"
-  
+
 jobs:
-  check-assignment:
+  check-comments:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: "14"
+
       - name: Install dependencies
         run: npm i @octokit/core @octokit/rest
       - name: Install @actions/core
         run: npm i @actions/core
-      - name: Check comments and post Comment
+
+      - name: Check comments and post updates
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         run: |
-          node <<EOF
-          const core = require("@actions/core");
-          const { Octokit } = require("@octokit/rest");
+          node - <<EOF
+          const core = require('@actions/core');
+          const { Octokit } = require('octokit/rest');
 
           try {
             const octokit = new Octokit({
-              auth: process.env.secrets.TRAFFIC_ACTION_TOKEN
+              auth: process.env.GITHUB_TOKEN
             });
-            
+
             const twoDaysAgo = new Date();
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
@@ -48,6 +55,7 @@ jobs:
                 body: body
               });
             }
+
             async function checkIssueComments() {
               const response = await octokit.issues.listForRepo({
                 owner: process.env.GITHUB_REPOSITORY_OWNER,
@@ -61,12 +69,13 @@ jobs:
                 for (const comment of comments) {
                   const commentDate = new Date(comment.created_at);
                   if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
-                    const message = "@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.";
+                    const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
                     await postComment(issue.number, message);
                   }
                 }
               }
             }
+
             checkIssueComments()
               .then(() => {
                 console.log('Comment check completed.');
@@ -76,4 +85,3 @@ jobs:
               });
           }
           EOF
-
