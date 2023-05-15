@@ -1,6 +1,7 @@
 name: Unassign issues with no PR
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
 
