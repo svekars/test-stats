@@ -34,7 +34,7 @@ jobs:
               const { data: comments } = await octokit.issues.listComments({
                 owner,
                 repo,
-                issue_number: issue.number,
+                issue_number: number,
               });
             
               const assignComment = comments.find(comment => comment.body.includes("/assigntome"));
@@ -49,7 +49,7 @@ jobs:
                   await octokit.issues.createComment({
                     owner,
                     repo,
-                    issue_number: issue.number,
+                    issue_number: number,
                     body: newCommentBody
                   });
                 }
