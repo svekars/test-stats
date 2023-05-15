@@ -24,7 +24,12 @@ jobs:
             // Function to check if a comment with the same content has been posted
             async function isCommentAlreadyPosted(issueNumber, commentBody) {
               const comments = await getComments(issueNumber);
-              return comments.some(comment => comment.body === commentBody);
+              for (const comment of comments) {
+                if (comment.body === commentBody) {
+                  return true;
+                }
+              }
+              return false;
             }
 
             async function getComments(issueNumber) {
@@ -60,7 +65,7 @@ jobs:
 
                 if (commentAlreadyPosted) {
                   console.log(`Comment has already been posted on issue ${issue.number}`);
-                } else if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
+                } else if (commentDate < twoDaysAgo && issue.body.includes('/assigntome')) {
                   const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
                   await postComment(issue.number, message);
                 }
