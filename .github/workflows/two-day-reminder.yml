@@ -25,21 +25,43 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: | 
-            const issueComment = context.payload.comment.body;
-            const assignRegex = /\/assigntome/i;
-            if (assignRegex.test(issueComment)) {
-              const commentCreatedAt = new Date(context.payload.comment.created_at);
-              const twoDaysAgo = new Date();
-              twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-              if (commentCreatedAt < twoDaysAgo) {
-                const assignee = context.payload.comment.user.login;
-                const octokit = context.github;
-                const { owner, repo } = context.repo;
-                octokit.issues.createComment({
-                  owner: owner,
-                  repo: repo,
-                  issue_number: context.issue.number,
-                  body: `This issue was assigned 2 or more days ago and no PR was sent. Please submit your PR ASAP.`
-                });
+            const { Octokit } = require("@octokit/rest");
+            
+            async function run() {
+              const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
+              
+              const { context } = require("@actions/github");
+              const { owner, repo, issue } = context.repo;
+              
+              const { data: comments } = await octokit.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                owner,
+                repo,
+                issue_number: issue.number,
+              });
+            
+              const assignComment = comments.find(comment => comment.body.includes("/assigntome"));
+            
+              if (assignComment) {
+                constCommentCreatedAt = new Date(assignComment.created_at);
+                const twoDaysAgo = new Date();
+                twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+              
+                if (commentCreatedAt < twoDaysAgo && !context.payload.issue.pull_request) {
+                if (commentCreatedAt < twoDaysAgo {
+                  const newCommentBody = "This issue was assigned more than 2 days ago. Please submit a PR ASAP."
+                  await octokit.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.issue.number,
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    body: newCommentBody
+                  });
+                }
               }
             }
+            run();
