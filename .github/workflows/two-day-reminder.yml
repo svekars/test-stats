@@ -43,7 +43,7 @@ jobs:
                 const twoDaysAgo = new Date();
                 twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
               
-                if (commentCreatedAt < twoDaysAgo {
+                if (commentCreatedAt < twoDaysAgo) {
                   const newCommentBody = "This issue was assigned more than 2 days ago. Please submit a PR ASAP."
                   await octokit.issues.createComment({
                     owner,
