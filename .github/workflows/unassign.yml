@@ -40,7 +40,7 @@ jobs:
                 for (const issue of issues.data) {
                   const assignedAt = new Date(issue.assignee.updated_at);
 
-                  if (assignedAt < threeDaysAgo) {
+                  if (assignedAt > threeDaysAgo) {
                     const pullRequests = await github.pulls.list({
                       owner: context.repo.owner,
                       repo: context.repo.repo,
