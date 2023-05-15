@@ -60,7 +60,7 @@ jobs:
                 for (const comment of comments) {
                   const commentDate = new Date(comment.created_at);
                   if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
-                    const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                    const message = "@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.";
                     await postComment(issue.number, message);
                   }
                 }
