@@ -18,61 +18,50 @@ jobs:
         with:
           node-version: 14
 
-      - name: Install dependencies
-        run: |
-          npm install @actions/core@1.5.0
-          npm install @actions/github@5.1.1
-
       - name: Run script to check and unassign issues
         env:
-          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
-        run: |
-          const github = require("@actions/github");
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            async function run() {
+              try {
+                const issues = await github.issues.listForRepo({
+                  ...github.context.repo,
+                  state: 'open',
+                  labels: 'test',
+                });
 
-          async function run() {
-            try {
-              const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+                for (const issue of issues.data) {
+                  const assignedAt = new Date(issue.assignee.updated_at);
+                  const threeDaysAgo = new Date();
+                  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
-              const { data: issues } = await octokit.issues.listForRepo({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                state: 'open',
-                labels: 'test',
-              });
-
-              for (const issue of issues) {
-                const assignedAt = new Date(issue.assignee.updated_at);
-                const threeDaysAgo = new Date();
-                threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
-                if (assignedAt < threeDaysAgo) {
-                  const { data: pullRequests } = await octokit.pulls.list({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    state: 'open',
-                    base: `refs/issues/${issue.number}`,
-                  });
-
-                  if (pullRequests.length === 0) {
-                    await octokit.issues.removeAssignees({
-                      owner: github.context.repo.owner,
-                      repo: github.context.repo.repo,
-                      issue_number: issue.number,
-                      assignees: [issue.assignee.login],
+                  if (assignedAt < threeDaysAgo) {
+                    const pullRequests = await github.pulls.list({
+                      ...github.context.repo,
+                      state: 'open',
+                      base: `refs/issues/${issue.number}`,
                     });
 
-                    await octokit.issues.createComment({
-                      owner: github.context.repo.owner,
-                      repo: github.context.repo.repo,
-                      issue_number: issue.number,
-                      body: 'This issue was unassigned due to inactivity. If you are still interested in working on this issue, please feel free to re-assign it to yourself and submit a pull request ASAP.',
-                    });
+                    if (pullRequests.data.length === 0) {
+                      await github.issues.removeAssignees({
+                        ...github.context.repo,
+                        issue_number: issue.number,
+                        assignees: [issue.assignee.login],
+                      });
+
+                      await github.issues.createComment({
+                        ...github.context.repo,
+                        issue_number: issue.number,
+                        body: 'This issue was unassigned due to inactivity. If you are still interested in working on this issue, please feel free to reassign it to yourself and submit a pull request ASAP.',
+                      });
+                    }
                   }
                 }
+              } catch (error) {
+                core.setFailed(error.message);
               }
-            } catch (error) {
-              core.setFailed(error.message);
             }
-          }
 
-          run();
+            run();
