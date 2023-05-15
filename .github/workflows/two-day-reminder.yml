@@ -24,7 +24,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: |
-            const core = require("@actions/core");
             const { Octokit } = require("@octokit/rest");
 
             const octokit = new Octokit({
