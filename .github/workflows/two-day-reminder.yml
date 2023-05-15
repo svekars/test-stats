@@ -9,14 +9,8 @@ jobs:
   check-comments:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "14"
-      - name: Install dependencies
-        run: npm i @octokit/core @octokit/rest
-      - name: Install @actions/core
-        run: npm i @actions/core
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Check comments and post updates
         uses: actions/github-script@v4
@@ -24,37 +18,31 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: |
-            const { Octokit } = require("@octokit/rest");
-
-            const octokit = new Octokit({
-              auth: process.env.GITHUB_TOKEN
-            });
-
             const twoDaysAgo = new Date();
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
             async function getComments(issueNumber) {
-              const response = await octokit.rest.issues.listComments({
-                owner: process.env.GITHUB_REPOSITORY_OWNER,
-                repo: process.env.GITHUB_REPOSITORY,
+              const response = await github.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: issueNumber
               });
-            return response.data;
+              return response.data;
             }
 
             async function postComment(issueNumber, body) {
-              await octokit.rest.issues.createComment({
-                owner: process.env.GITHUB_REPOSITORY_OWNER,
-                repo: process.env.GITHUB_REPOSITORY,
+              await github.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: issueNumber,
                 body: body
               });
             }
 
             async function checkIssueComments() {
-              const response = await octokit.rest.issues.listForRepo({
-                owner: process.env.GITHUB_REPOSITORY_OWNER,
-                repo: process.env.GITHUB_REPOSITORY,
+              const response = await github.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 state: 'open'
               });
 
@@ -71,10 +59,4 @@ jobs:
               }
             }
 
-            checkIssueComments()
-              .then(() => {
-                console.log('Comment check completed.');
-              })
-              .catch((error) => {
-                core.setFailed(`Comment check failed: ${error}`);
-              });
+            await checkIssueComments();
