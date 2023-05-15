@@ -31,12 +31,12 @@ jobs:
               const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
               
               const { github } = require("@actions/github");
-              const { owner, repo } = github.context.repo;
+              const { owner, repo, issue } = github.context;
               
               const { data: comments } = await octokit.issues.listComments({
                 owner,
                 repo,
-                issue_number: github.context.issue.number,
+                issue_number: issue.number,
               });
             
               const assignComment = comments.find(comment => comment.body.includes("/assigntome"));
@@ -51,7 +51,7 @@ jobs:
                   await octokit.issues.createComment({
                     owner,
                     repo,
-                    issue_number: github.context.issue.number,
+                    issue_number: issue.number,
                     body: newCommentBody
                   });
                 }
