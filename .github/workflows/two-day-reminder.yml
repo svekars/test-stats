@@ -18,7 +18,7 @@ jobs:
           node-version: "14"
 
       - name: Install dependencies
-        run: npm install @actions/core octokit/rest@latest
+        run: npm i @octokit/core @octokit/rest
 
       - name: Check comments and post Comment
         run: |
