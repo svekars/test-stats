@@ -28,9 +28,9 @@ jobs:
               const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
               
               const { data: comments } = await octokit.issues.listComments({
-                owner: context.repo.owner,
-                repo: content.repo.repo,
-                issue_number: issueNumber,
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                issue_number: github.context.issue.number,
               });
             
               const assignComment = comments.find(comment => comment.body.includes("/assigntome"));
@@ -43,9 +43,9 @@ jobs:
                 if (commentCreatedAt < twoDaysAgo && !context.payload.issue.pull_request) {
                   const newCommentBody = "This issue was assigned more than 2 days ago. Please submit a PR ASAP."
                   await octokit.issues.createComment({
-                    owner: context.repo.owner,
-                    repo: content.repo.repo,
-                    issue_number: issueNumber,
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    issue_number: github.context.issue.number,
                     body: newCommentBody
                   });
                 }
