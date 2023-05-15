@@ -28,6 +28,14 @@ jobs:
               });
               return response.data;
             }
+            async function getPullRequests(issueNumber) {
+              const response = await github.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open'
+              });
+              return response.data;
+            }
             async function postComment(issueNumber, body) {
               await github.issues.createComment({
                 owner: context.repo.owner,
@@ -48,11 +56,14 @@ jobs:
                   const comments = await getComments(issue.number);
                   const reminderCommentExists = comments.some(comment => comment.body.includes("It's been more than 2 days since this issue was assigned."));
                   if (!reminderCommentExists) {
-                    for (const comment of comments) {
-                      const commentDate = new Date(comment.created_at);
-                      if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
-                        const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
-                        await postComment(issue.number, message);
+                    const pullRequests = await getPullRequests(issue.number);
+                    if (pullRequests.length === 0) {
+                      for (const comment of comments) {
+                        const commentDate = new Date(comment.created_at);
+                        if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
+                          const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                          await postComment(issue.number, message);
+                        }
                       }
                     }
                   }
