@@ -9,10 +9,12 @@ jobs:
   check-assignment:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Install Dependencies
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '14'
       - name: Install @octokit/rest
         run: |
           npm i @octokit/core @octokit/rest
@@ -42,7 +44,7 @@ jobs:
               const assignComment = comments.find(comment => comment.body.includes("/assigntome"));
             
               if (assignComment) {
-                constCommentCreatedAt = new Date(assignComment.created_at);
+                const CommentCreatedAt = new Date(assignComment.created_at);
                 const twoDaysAgo = new Date();
                 twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
               
