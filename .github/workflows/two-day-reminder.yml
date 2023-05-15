@@ -49,11 +49,18 @@ jobs:
               const issues = response.data;
               for (const issue of issues) {
                 const comments = await getComments(issue.number);
-                for (const comment of comments) {
-                  const commentDate = new Date(comment.created_at);
-                  if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
-                    const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
-                    await postComment(issue.number, message);
+                const hasAssignMeComment = comments.some(comment => comment.body.includes("/assigntome"));
+                const assignMeCommentDate = comments.find(comment => comment.body.includes("/assigntome"))?.created_at;
+
+                if (hasAssignMeComment) {
+                  const hasSubmitPRComment = comments.some(comment => comment.body.includes("Please submit a PR ASAP."));
+
+                  if (!hasSubmitPRComment) {
+                    const commentDate = new Date(assignMeCommentDate);
+                    if (commentDate < twoDaysAgo) {
+                      const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                      await postComment(issue.number, message);
+                    }
                   }
                 }
               }
