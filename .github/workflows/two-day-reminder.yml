@@ -20,18 +20,6 @@ jobs:
           script: |
             const twoDaysAgo = new Date();
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
-            // Function to check if a comment with the same content has been posted
-            async function isCommentAlreadyPosted(issueNumber, commentBody) {
-              const comments = await getComments(issueNumber);
-              for (const comment of comments) {
-                if (comment.body === commentBody) {
-                  return true;
-                }
-              }
-              return false;
-            }
-
             async function getComments(issueNumber) {
               const response = await github.issues.listComments({
                 owner: context.repo.owner,
@@ -40,7 +28,6 @@ jobs:
               });
               return response.data;
             }
-
             async function postComment(issueNumber, body) {
               await github.issues.createComment({
                 owner: context.repo.owner,
@@ -49,7 +36,6 @@ jobs:
                 body: body
               });
             }
-
             async function checkIssueComments() {
               const response = await github.issues.listForRepo({
                 owner: context.repo.owner,
@@ -59,17 +45,13 @@ jobs:
               const issues = response.data;
               for (const issue of issues) {
                 const comments = await getComments(issue.number);
-                const commentBody = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
-                const commentAlreadyPosted = await isCommentAlreadyPosted(issue.number, commentBody);
-                const commentDate = new Date(comments[0]?.created_at);
-
-                if (commentAlreadyPosted) {
-                  console.log(`Comment has already been posted on issue ${issue.number}`);
-                } else if (commentDate < twoDaysAgo && issue.body.includes('/assigntome')) {
-                  const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
-                  await postComment(issue.number, message);
+                for (const comment of comments) {
+                  const commentDate = new Date(comment.created_at);
+                  if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
+                    const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                    await postComment(issue.number, message);
+                  }
                 }
               }
             }
-
             await checkIssueComments();
