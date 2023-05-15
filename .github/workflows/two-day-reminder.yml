@@ -29,12 +29,13 @@ jobs:
             
             async function run() {
               const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
-              const { owner, repo, issue } = context.issue;
+              const issueNumber = github.context.issue.number;
+              const { owner, repo } = github.context.repo;
               
               const { data: comments } = await octokit.issues.listComments({
                 owner,
                 repo,
-                issue_number: number,
+                issue_number: issueNumber,
               });
             
               const assignComment = comments.find(comment => comment.body.includes("/assigntome"));
@@ -49,7 +50,7 @@ jobs:
                   await octokit.issues.createComment({
                     owner,
                     repo,
-                    issue_number: number,
+                    issue_number: issueNumber,
                     body: newCommentBody
                   });
                 }
