@@ -1,6 +1,7 @@
 name: Reminder to submit PR
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 */12 * * *"
 
