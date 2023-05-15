@@ -24,8 +24,6 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const { context, github } = require('@actions/github');
-
             async function run() {
               try {
                 const threeDaysAgo = new Date();
