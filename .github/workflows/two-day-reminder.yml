@@ -30,11 +30,10 @@ jobs:
             async function run() {
               const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
               const issueNumber = context.payload.issue.number;
-              const { owner, repo } = context.payload.repository;
               
               const { data: comments } = await octokit.issues.listComments({
-                owner,
-                repo,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: issueNumber,
               });
             
@@ -48,8 +47,8 @@ jobs:
                 if (commentCreatedAt < twoDaysAgo) {
                   const newCommentBody = "This issue was assigned more than 2 days ago. Please submit a PR ASAP."
                   await octokit.issues.createComment({
-                    owner,
-                    repo,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
                     issue_number: issueNumber,
                     body: newCommentBody
                   });
