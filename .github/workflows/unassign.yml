@@ -25,36 +25,42 @@ jobs:
         with:
           script: |
             const { context, github } = require('@actions/github');
-            
+
             async function run() {
               try {
+                const threeDaysAgo = new Date();
+                threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
                 const issues = await github.issues.listForRepo({
-                  ...github.context.repo,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
                   state: 'open',
                   labels: 'test',
+                  assignee: '*'
                 });
 
                 for (const issue of issues.data) {
                   const assignedAt = new Date(issue.assignee.updated_at);
-                  const threeDaysAgo = new Date();
-                  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
                   if (assignedAt < threeDaysAgo) {
                     const pullRequests = await github.pulls.list({
-                      ...github.context.repo,
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
                       state: 'open',
                       base: `refs/issues/${issue.number}`,
                     });
 
                     if (pullRequests.data.length === 0) {
                       await github.issues.removeAssignees({
-                        ...github.context.repo,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
                         issue_number: issue.number,
                         assignees: [issue.assignee.login],
                       });
 
                       await github.issues.createComment({
-                        ...github.context.repo,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
                         issue_number: issue.number,
                         body: 'This issue was unassigned due to inactivity. If you are still interested in working on this issue, please feel free to reassign it to yourself and submit a pull request ASAP.',
                       });
@@ -62,7 +68,7 @@ jobs:
                   }
                 }
               } catch (error) {
-                core.setFailed(error.message);
+                console.error(error);
               }
             }
 
