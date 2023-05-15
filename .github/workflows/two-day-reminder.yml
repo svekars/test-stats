@@ -28,7 +28,7 @@ jobs:
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
             
             if (assignRegex.test(issueComment)) {
-              const commentCreatedAt = new Date(context.payload.comment.created_at):
+              const commentCreatedAt = new Date(context.payload.comment.created_at);
               
               if (commentCreatedAt < twoDaysAgo && !context.payload.issue.pull_request) {
                 const { Octokit } = require("@octokit/rest");
