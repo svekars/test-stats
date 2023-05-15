@@ -19,61 +19,63 @@ jobs:
         run: npm i @actions/core
 
       - name: Check comments and post updates
+        uses: actions/github-script@v4
         env:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
-        run: |
-          const core = require('@actions/core');
-          const { Octokit } = require('@octokit/rest');
+        with:
+          script: |
+            const core = require("@actions/core");
+            const { Octokit } = require("@octokit/rest");
 
-          const octokit = new Octokit({
-            auth: process.env.GITHUB_TOKEN
-          });
-
-          const twoDaysAgo = new Date();
-          twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
-          async function getComments(issueNumber) {
-            const response = await octokit.rest.issues.listComments({
-              owner: process.env.GITHUB_REPOSITORY_OWNER,
-              repo: process.env.GITHUB_REPOSITORY,
-              issue_number: issueNumber
-            });
-          return response.data;
-          }
-
-          async function postComment(issueNumber, body) {
-            await octokit.rest.issues.createComment({
-              owner: process.env.GITHUB_REPOSITORY_OWNER,
-              repo: process.env.GITHUB_REPOSITORY,
-              issue_number: issueNumber,
-              body: body
-            });
-          }
-
-          async function checkIssueComments() {
-            const response = await octokit.rest.issues.listForRepo({
-              owner: process.env.GITHUB_REPOSITORY_OWNER,
-              repo: process.env.GITHUB_REPOSITORY,
-              state: 'open'
+            const octokit = new Octokit({
+              auth: process.env.GITHUB_TOKEN
             });
 
-            const issues = response.data;
-            for (const issue of issues) {
-              const comments = await getComments(issue.number);
-              for (const comment of comments) {
-                const commentDate = new Date(comment.created_at);
-                if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
-                  const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
-                  await postComment(issue.number, message);
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+            async function getComments(issueNumber) {
+              const response = await octokit.rest.issues.listComments({
+                owner: process.env.GITHUB_REPOSITORY_OWNER,
+                repo: process.env.GITHUB_REPOSITORY,
+                issue_number: issueNumber
+              });
+            return response.data;
+            }
+
+            async function postComment(issueNumber, body) {
+              await octokit.rest.issues.createComment({
+                owner: process.env.GITHUB_REPOSITORY_OWNER,
+                repo: process.env.GITHUB_REPOSITORY,
+                issue_number: issueNumber,
+                body: body
+              });
+            }
+
+            async function checkIssueComments() {
+              const response = await octokit.rest.issues.listForRepo({
+                owner: process.env.GITHUB_REPOSITORY_OWNER,
+                repo: process.env.GITHUB_REPOSITORY,
+                state: 'open'
+              });
+
+              const issues = response.data;
+              for (const issue of issues) {
+                const comments = await getComments(issue.number);
+                for (const comment of comments) {
+                  const commentDate = new Date(comment.created_at);
+                  if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
+                    const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
+                    await postComment(issue.number, message);
+                  }
                 }
               }
             }
-          }
 
-          checkIssueComments()
-            .then(() => {
-              console.log('Comment check completed.');
-            })
-            .catch((error) => {
-              core.setFailed(`Comment check failed: ${error}`);
-            });
+            checkIssueComments()
+              .then(() => {
+                console.log('Comment check completed.');
+              })
+              .catch((error) => {
+                core.setFailed(`Comment check failed: ${error}`);
+              });
