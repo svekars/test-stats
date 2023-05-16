@@ -37,13 +37,21 @@ jobs:
               });
               const hasLabel = issue.labels.some(label => label.name === 'test');
               if (hasLabel) {
-                octokit.issues.addAssignees({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issueNumber,
-                  assignees: [assignee]
-                });
-              } else {
+                if (issue.assignee !== null) {
+                  await octokit.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issueNumber,
+                    body: "The issue is already assigned."
+                  });
+                } else {
+                  octokit.issues.addAssignees({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issueNumber,
+                    assignees: [assignee]
+                  });
+                } else {
                 console.log(`Issue #${issueNumber} does not have the label. Skipping`)
+                }
               }
-            }
