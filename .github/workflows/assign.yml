@@ -30,10 +30,19 @@ jobs:
               const octokit = new Octokit({
                 auth: process.env.GITHUB_TOKEN,
               });
-              octokit.issues.addAssignees({
+              const { data: issue } = await octokit.issues.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issueNumber,
-                assignees: [assignee]
+                issue_number: issueNumber
               });
+              const hasLabel = issue.labels.some(label => label.name === 'test');
+              if (hasLabel) {
+                octokit.issues.addAssignees({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  assignees: [assignee]
+                });
+              } else {
+                console.log(`Issue #${issueNumber} does not have the label. Skipping`)
             }
