@@ -54,7 +54,8 @@ jobs:
               for (const issue of issues) {
                 if (issue.assignee) {
                   const assignedDate = new Date(issue.assignee.update_at);
-                  if (assignedDate <= twoDaysAgo) {
+                  assignedDate.setHours(0, 0 ,0, 0);
+                  if (assignedDate >= twoDaysAgo) {
                     const comments = await getComments(issue.number);
                     const reminderCommentExists = comments.some(comment => comment.body.includes("It's been more than 2 days since this issue was assigned."));
                     if (!reminderCommentExists) {
