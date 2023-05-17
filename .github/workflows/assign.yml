@@ -53,6 +53,12 @@ jobs:
                   });
                 }
               } else {
-              console.log(`Issue #${issueNumber} does not have the label. Skipping`)
+                const labelUrl = "https://github.com/${context.repo.owner}/${context.repo.repo}/issues?q=label%3Atest"
+                await octokit.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: "Issue #${issueNumber} does not have the correct label. Please pick an unnasigned issue with the [test label](${labelUrl})." 
+                });
               }
             }
