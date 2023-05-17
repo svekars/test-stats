@@ -54,11 +54,12 @@ jobs:
                 }
               } else {
                 const labelUrl = "https://github.com/${context.repo.owner}/${context.repo.repo}/issues?q=is%3Aopen+is%3Aissue+label%3Atest"
+                const commmentMessage = "This issue does not have the correct label. Please pick an unnasigned issue with the [test label](${labelUrl})"
                 await octokit.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issueNumber,
-                  body: "This issue does not have the correct label. Please pick an unnasigned issue with the [test label](` + labelUrl + `)." 
+                  body: commmentMessage
                 });
               }
             }
