@@ -53,17 +53,15 @@ jobs:
               const issues = response.data;
               for (const issue of issues) {
                 if (issue.assignee) {
-                  const comments = await getComments(issue.number);
-                  const reminderCommentExists = comments.some(comment => comment.body.includes("It's been more than 2 days since this issue was assigned."));
-                  if (!reminderCommentExists) {
-                    const pullRequests = await getPullRequests(issue.number);
-                    if (pullRequests.length === 0) {
-                      for (const comment of comments) {
-                        const commentDate = new Date(comment.created_at);
-                        if (commentDate < twoDaysAgo && comment.body.includes('/assigntome')) {
+                  const assignedDate = new Date(issue.assignee.update_at);
+                  if (assignedDate < twoDaysAgo) {
+                    const comments = await getComments(issue.number);
+                    const reminderCommentExists = comments.some(comment => comment.body.includes("It's been more than 2 days since this issue was assigned."));
+                    if (!reminderCommentExists) {
+                      const pullRequests = await getPullRequests(issue.number);
+                      if (pullRequests.length === 0) {
                           const message = `@${issue.user.login} It's been more than 2 days since this issue was assigned. Please submit a PR ASAP.`;
                           await postComment(issue.number, message);
-                        }
                       }
                     }
                   }
