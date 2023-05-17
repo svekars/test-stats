@@ -51,6 +51,7 @@ jobs:
                     issue_number: issueNumber,
                     assignees: [assignee]
                   });
+                }
               } else {
               console.log(`Issue #${issueNumber} does not have the label. Skipping`)
               }
