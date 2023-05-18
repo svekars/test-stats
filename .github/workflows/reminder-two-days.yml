@@ -1,15 +1,13 @@
-name: Check Issues and Pull Requests
+name: Check Issues for Open Tests
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
 
 jobs:
-  check-issues-and-pull-requests:
+  check-issues:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -20,76 +18,65 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
-        run: npm install @actions/core @actions/github @octokit/rest
+        run: npm install @actions/core octokit
 
-      - name: Run the script
+      - name: Check issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          node - <<EOF
-          const core = require('@actions/core');
-          const github = require('@actions/github');
-          const { Octokit } = require('@octokit/rest');
+          node -e '
+            const core = require("@actions/core");
+            const { Octokit } = require("octokit");
 
-          async function run() {
-            try {
-              const token = process.env.GITHUB_TOKEN;
-              const octokit = new Octokit({ auth: token });
+            async function run() {
+              const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+              const { owner, repo } = process.env.GITHUB_REPOSITORY;
 
-              const repo = github.context.repo;
-              const owner = repo.owner;
-              const repoName = repo.repo;
-
-              const { data: issues } = await octokit.issues.listForRepo({
-                owner,
-                repo: repoName,
-                state: 'open',
-                labels: 'test',
-                assignee: '*',
-              });
-
-              for (const issue of issues) {
-                const issueNumber = issue.number;
-
-                const { data: pullRequests } = await octokit.pulls.list({
+              try {
+                const { data: issues } = await octokit.rest.issues.listForRepo({
                   owner,
-                  repo: repoName,
-                  state: 'open',
-                  per_page: 100,
+                  repo,
+                  state: "open",
+                  labels: "test",
                 });
 
-                const referencedInPRs = pullRequests.some((pr) =>
-                  pr.body.includes(`#${issueNumber}`)
-                );
+                for (const issue of issues) {
+                  const { number, created_at, assignees } = issue;
 
-                if (!referencedInPRs) {
-                  const { data: issueData } = await octokit.issues.get({
-                    owner,
-                    repo: repoName,
-                    issue_number: issueNumber,
-                  });
-                
-                  const issueAssignedAt = new Date(issueData.assignees[0].created_at);
-                  const currentDate = new Date();
+                  const assignedDate = new Date(created_at);
+                  const twoDaysAgo = new Date();
+                  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-                  const timeDiffInDays = Math.floor(
-                   (currentDate - issueAssignedAt) / (1000 * 60 * 60 * 24)
-                  );
-
-                  if (timeDiffInDays > 2) {
-                    // Add a comment to the issue
-                    await octokit.issues.createComment({
+                  if (assignedDate < twoDaysAgo) {
+                    const { data: pullRequests } = await octokit.rest.pulls.list({
                       owner,
-                      repo: repoName,
-                      issue_number: issueNumber,
-                      body: "It has been more than two days since this issue was assigned, but we have not seen a pull request referencing it. If you have already submitted a PR, please make sure to reference the issues in the PR body. Please submit your PR ASAP.",
+                      repo,
+                      state: "open",
                     });
+
+                    const matchingPullRequests = pullRequests.filter((pr) =>
+                      pr.body.includes(`#${number}`)
+                    );
+
+                    if (matchingPullRequests.length === 0) {
+                      const assigneeLogins = assignees.map((assignee) => assignee.login);
+                      const comment = `@${assigneeLogins.join(", @")} Please submit a pull request ASAP.`;
+
+                      await octokit.rest.issues.createComment({
+                        owner,
+                        repo,
+                        issue_number: number,
+                        body: comment,
+                      });
+
+                      core.info(`Comment added to issue #${number}`);
+                    }
                   }
                 }
+              } catch (error) {
+                core.setFailed(error.message);
               }
-            } catch (error) {
-              console.error(error);
-              process.exit(1);
             }
-          }
 
-          run();
-          EOF
+            run();
+          '
