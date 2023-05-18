@@ -18,7 +18,7 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
-        run: npm install @actions/core @octokit/core @octokit/rest
+        run: npm install @actions/core @octokit/rest
 
       - name: Check issues
         env:
