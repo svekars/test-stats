@@ -22,7 +22,7 @@ jobs:
 
       - name: Check issues
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         run: |
           node -e '
             const core = require("@actions/core");
