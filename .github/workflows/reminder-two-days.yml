@@ -24,7 +24,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         run: |
-          node -e '
             const core = require("@actions/core");
             const { Octokit } = require("@octokit/rest");
 
@@ -80,4 +79,3 @@ jobs:
             }
 
             run();
-          '
