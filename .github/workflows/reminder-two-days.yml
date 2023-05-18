@@ -83,7 +83,7 @@ jobs:
                       owner,
                       repo: repoName,
                       issue_number: issueNumber,
-                      body: `It has been more than two days since this issue was assigned, but we have not seen a pull request referencing it. If you have already submitted a PR, please make sure to reference the issues in the PR body. Please submit your PR ASAP.`,
+                      body: "It has been more than two days since this issue was assigned, but we have not seen a pull request referencing it. If you have already submitted a PR, please make sure to reference the issues in the PR body. Please submit your PR ASAP.",
                     });
                   }
                 }
