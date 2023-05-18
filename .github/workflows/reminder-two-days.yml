@@ -30,9 +30,7 @@ jobs:
 
             async function run() {
               const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-              const { owner, repo } = process.env.GITHUB_REPOSITORY;
-
-
+              const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
               try {
                 const { data: issues } = await octokit.rest.issues.listForRepo({
                   owner,
@@ -42,7 +40,7 @@ jobs:
                 });
 
                 for (const issue of issues) {
-                  const { number, created_at, assignees } = issue;
+                  const { number, created_at, assignees, user } = issue;
 
                   const assignedDate = new Date(created_at);
                   const twoDaysAgo = new Date();
