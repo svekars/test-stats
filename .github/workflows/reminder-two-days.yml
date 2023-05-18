@@ -1,7 +1,6 @@
 name: Check Issues and Pull Requests
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
 
@@ -30,8 +29,9 @@ jobs:
 
           async function run() {
             try {
-              const token = core.getInput('github-token');
+              const token = process.env.GITHUB_TOKEN;
               const octokit = new Octokit({ auth: token });
+
               const repo = github.context.repo;
               const owner = repo.owner;
               const repoName = repo.repo;
@@ -44,6 +44,7 @@ jobs:
                 assignee: '*',
               });
 
+              // Iterate over the issues
               for (const issue of issues) {
                 const issueNumber = issue.number;
 
@@ -59,6 +60,7 @@ jobs:
                 );
 
                 if (!referencedInPRs) {
+                  // Check when the issue was assigned
                   const { data: issueComments } = await octokit.issues.listComments({
                     owner,
                     repo: repoName,
@@ -79,7 +81,7 @@ jobs:
                       owner,
                       repo: repoName,
                       issue_number: issueNumber,
-                      body: `It has been more than two days since this issue was assigned, but we have not seen a pull request referencing it. If you have the pull request but forgot to mention the issue, please do so. Otherwise, please submit your PR ASAP.`,
+                      body: `It has been more than two days since this issue was assigned, but we have not seen a pull request referencing it. If you have already submitted a PR, please make sure to reference the issues in the PR body. Please submit your PR ASAP.`,
                     });
                   }
                 }
