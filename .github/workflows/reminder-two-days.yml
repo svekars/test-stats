@@ -18,7 +18,7 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
-        run: npm install @actions/core @octokit/rest
+        run: npm install @actions/core @octokit/core @octokit/rest
 
       - name: Check issues
         env:
@@ -30,7 +30,6 @@ jobs:
 
             async function run() {
               const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-              const { owner, repo } = process.env.GITHUB_REPOSITORY;
 
               try {
                 const { data: issues } = await octokit.rest.issues.listForRepo({
@@ -47,7 +46,7 @@ jobs:
                   const twoDaysAgo = new Date();
                   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-                  if (assignedDate < twoDaysAgo) {
+                  if (assignedDate > twoDaysAgo) {
                     const { data: pullRequests } = await octokit.rest.pulls.list({
                       owner,
                       repo,
@@ -60,7 +59,7 @@ jobs:
 
                     if (matchingPullRequests.length === 0) {
                       const assigneeLogins = assignees.map((assignee) => assignee.login);
-                      const comment = `@${assigneeLogins.join(", @")} Please submit a pull request ASAP.`;
+                      const comment = "@${issue.user.login}, please submit a pull request ASAP.";
 
                       await octokit.rest.issues.createComment({
                         owner,
@@ -69,7 +68,7 @@ jobs:
                         body: comment,
                       });
 
-                      core.info(`Comment added to issue #${number}`);
+                      core.info("Comment added to issue #${number}");
                     }
                   }
                 }
