@@ -24,6 +24,9 @@ jobs:
 
       - name: Run the script
         run: |
+          node - <<EOF
+          const core = require('@actions/core');
+          const github = require('@actions/github');
           const { Octokit } = require('@octokit/rest');
 
           async function run() {
@@ -92,3 +95,4 @@ jobs:
           }
 
           run();
+          EOF
