@@ -1,0 +1,93 @@
+name: Check Issues and Pull Requests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  check-issues-and-pull-requests:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install @actions/core @actions/github octokit
+
+      - name: Run the script
+        run: |
+          const core = require('@actions/core');
+          const github = require('@actions/github');
+          const { Octokit } = require('@octokit/rest');
+
+          async function run() {
+            try {
+              const token = core.getInput('github-token');
+              const octokit = new Octokit({ auth: token });
+              const repo = github.context.repo;
+              const owner = repo.owner;
+              const repoName = repo.repo;
+
+              const { data: issues } = await octokit.issues.listForRepo({
+                owner,
+                repo: repoName,
+                state: 'open',
+                labels: 'test',
+                assignee: '*',
+              });
+
+              for (const issue of issues) {
+                const issueNumber = issue.number;
+
+                const { data: pullRequests } = await octokit.pulls.list({
+                  owner,
+                  repo: repoName,
+                  state: 'open',
+                  per_page: 100,
+                });
+
+                const referencedInPRs = pullRequests.some((pr) =>
+                  pr.body.includes(`#${issueNumber}`)
+                );
+
+                if (!referencedInPRs) {
+                  const { data: issueComments } = await octokit.issues.listComments({
+                    owner,
+                    repo: repoName,
+                    issue_number: issueNumber,
+                    per_page: 100,
+                  });
+
+                  const issueAssignedAt = issue.assignees[0].login;
+                  const currentDate = new Date();
+
+                  // Calculate the time difference in days
+                  const timeDiffInDays =
+                    (currentDate - new Date(issueAssignedAt)) / (1000 * 60 * 60 * 24);
+
+                  if (timeDiffInDays > 2) {
+                    // Add a comment to the issue
+                    await octokit.issues.createComment({
+                      owner,
+                      repo: repoName,
+                      issue_number: issueNumber,
+                      body: `It has been more than two days since this issue was assigned, but we have not seen a pull request referencing it. If you have the pull request but forgot to mention the issue, please do so. Otherwise, please submit your PR ASAP.`,
+                    });
+                  }
+                }
+              }
+            } catch (error) {
+              console.error(error);
+              core.setFailed(error.message);
+            }
+          }
+
+          run();
