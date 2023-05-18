@@ -30,6 +30,8 @@ jobs:
 
             async function run() {
               const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+              const { owner, repo } = process.env.GITHUB_REPOSITORY;
+
 
               try {
                 const { data: issues } = await octokit.rest.issues.listForRepo({
