@@ -2,7 +2,7 @@ import os
 import requests
 import csv
 
-TOKEN = os.environ.get("GITHUB_TOKEN")
+token = os.environ.get("GITHUB_TOKEN")
 
 url = "https://api.github.com/repos/{owner}/{repo}/pulls?state=closed"
 
