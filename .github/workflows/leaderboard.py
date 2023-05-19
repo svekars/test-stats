@@ -63,7 +63,7 @@ sorted_authors = sorted(author_data.items(), key=lambda x: x[1]["points"], rever
 csv_data = [("Author", "Points", "Pull Requests")]
 for author, data in sorted_authors:
     points = data["points"]
-    pr_links = "\n".join(data["pr_links"]).replace('n', ' \n')
+    pr_links = ",\n".join(data["pr_links"])
     csv_data.append((author, points, pr_links))
 
 csv_filename = "leaderboard.csv"
@@ -73,3 +73,14 @@ with open(csv_filename, "w", newline="") as file:
     writer.writerows(csv_data)
 
 print(f"Leaderoard saved to {csv_filename}")
+
+markdown_table = "| Author | Points | PR |\n"
+markdown_table += "|------ | ------- | ----------------------------------------------------- |\n"
+for author, data in sorted_authors:
+    points = data["points"]
+    pr_links = ",\n". join(data["pr_links"]).replace('\n', ' \n')
+    markdown_table += f"| {author} | {points} | {pr_links} |\n"
+    
+markdown_filename = "leaderboard.md"
+
+print(f"Leaderoard saved to {markdown_filename}") 
