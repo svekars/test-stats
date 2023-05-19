@@ -15,6 +15,9 @@ jobs:
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -35,5 +38,5 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
-        directory: .
+        branch: ${{ github.ref }}
+        directory: "."
