@@ -83,4 +83,7 @@ for author, data in sorted_authors:
     
 markdown_filename = "leaderboard.md"
 
+with open(markdown_filename, "w", newline="") as file:
+    file.write(markdown_table)
+
 print(f"Leaderoard saved to {markdown_filename}") 
