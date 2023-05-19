@@ -35,8 +35,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
     - name: push
-        uses: actions-x/commit@v6
-        with: 
-          branch: main
-          directory: ./
-          token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+      uses: actions-x/commit@v6
+      with: 
+        branch: main
+        directory: ./
+        token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
