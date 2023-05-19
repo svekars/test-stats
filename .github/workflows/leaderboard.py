@@ -63,7 +63,7 @@ sorted_authors = sorted(author_data.items(), key=lambda x: x[1]["points"], rever
 csv_data = [("Author", "Points", "Pull Requests")]
 for author, data in sorted_authors:
     points = data["points"]
-    pr_links = "\n".join(data["pr_links"])
+    pr_links = ",\n".join(data["pr_links"])
     csv_data.append((author, points, pr_links))
 
 csv_filename = "leaderboard.csv"
