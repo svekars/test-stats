@@ -31,3 +31,9 @@ jobs:
         python3 ./.github/workflows/leaderboard.py
       env:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: main
+        directory: .
