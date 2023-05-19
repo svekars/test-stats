@@ -14,9 +14,9 @@ jobs:
 
     steps:
     - name: Checkout this repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
-        ref: ${{ github.head_ref }}
+        ref: ${{ github.event.pull_request.head.sha }}
         fetch-depth: 0
 
     - name: Set up Python
@@ -34,9 +34,9 @@ jobs:
         python3 ./.github/workflows/leaderboard.py
       env:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.head_ref }}
-        directory: ./
+    - name: push
+        uses: actions-x/commit@v6
+        with: 
+          branch: main
+          directory: ./
+          token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
