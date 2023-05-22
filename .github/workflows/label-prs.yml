@@ -21,7 +21,7 @@ jobs:
           node-version: '14'
 
       - name: Install Dependencies
-        run: npm install @actions/github octokit
+        run: npm install @actions/github @octokit/rest
 
       - name: Add Labels to Pull Requests
         run: |
@@ -41,13 +41,11 @@ jobs:
             for (const pr of pullRequests) {
               const { number, body } = pr;
 
-              // Extract issue numbers from pull request description
               const issueNumbers = body.match(/#(\d+)/g);
               if (!issueNumbers) continue;
 
               const labelsToAdd = [];
 
-              // Get labels from each referenced issue
               for (const issueNumber of issueNumbers) {
                 const issueId = parseInt(issueNumber.replace("#", ""), 10);
 
@@ -57,13 +55,11 @@ jobs:
                   issue_number: issueId
                 });
 
-                // Add labels from the issue to the pull request
                 if (issue.labels) {
                   labelsToAdd.push(...issue.labels.map(label => label.name));
                 }
               }
 
-              // Add labels to the pull request
               if (labelsToAdd.length > 0) {
                 await octokit.issues.addLabels({
                   owner,
