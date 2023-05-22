@@ -53,6 +53,7 @@ for repository in repositories:
     owner = repository["owner"]
     repo = repository["repo"]
     pull_requests = get_pull_requests(owner, repo)
+    
     for pr in pull_requests:
         if "user" in pr and "login" in pr["user"]:
             author = pr["user"]["login"]
@@ -60,9 +61,9 @@ for repository in repositories:
             author = pr["author"]["login"]
         else:
             continue
-
+        
         labels = [label["name"] for label in pr["labels"]]
-        if "test" in labels:
+        if "test" in labels and any(label in labels for label in ['easy', 'medium', 'advanced']):
             points = sum(label_points[label] for label in labels if label in label_points)
             pr_url = pr["html_url"]
 
@@ -71,7 +72,6 @@ for repository in repositories:
                 author_data[author]["pr_links"].append(pr_url)
             else:
                 author_data[author] = {"points": points, "pr_links": [pr_url]}
-            #author_points[author] = author_points.get(author, 0) + points
 
 sorted_authors = sorted(author_data.items(), key=lambda x: x[1]["points"], reverse=True)
 
