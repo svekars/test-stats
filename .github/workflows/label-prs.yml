@@ -17,24 +17,25 @@ jobs:
       - name: Propagate labels to pull requests
         uses: actions/github-script@v6
         env:
-          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const issue = context.issue;
+            const issue = context.payload.pull_request;
             const issueNumber = issue.number;
             const issueLabels = issue.labels && issue.labels.length > 0 ? issue.labels.map(label => label.name) : [];
             
             const { data: pullRequests } = await github.rest.pulls.list({
-              owner: issue.owner,
-              repo: issue.repo,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               state: 'open',
-              head: `${issue.owner}:${issueNumber}`,
-            });   
+              head: `${issue.head.repo.owner.login}:${issueNumber}`,
+            });
+
             for (const pullRequest of pullRequests) {
               // Add labels to each pull request
               await github.rest.issues.addLabels({
-                owner: pullRequest.base.user.login,
-                repo: pullRequest.base.repo.name,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: pullRequest.number,
                 labels: issueLabels
               });
