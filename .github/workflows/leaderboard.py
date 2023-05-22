@@ -78,8 +78,8 @@ markdown_table = "| Author | Points | PR |\n"
 markdown_table += "|--- | --- | ---|\n"
 for author, data in sorted_authors:
     points = data["points"]
-    pr_links = ",\n". join(data["pr_links"])
-    markdown_table += f"| {author} | {points} | {pr_links} |\n"
+    pr_links = "\n".join(f"{pr_link} |" for pr_link in data["pr_links"])
+    markdown_table += f"| {author} | {points} | {pr_links} \n"
     
 markdown_filename = "leaderboard.md"
 
