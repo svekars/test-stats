@@ -3,8 +3,7 @@ import requests
 import csv
 
 token = os.environ.get("GITHUB_TOKEN")
-
-url = "https://api.github.com/repos/{owner}/{repo}/pulls?state=closed"
+base_url = 'https://api.github.com'
 
 #add least of repositories
 repositories = [
