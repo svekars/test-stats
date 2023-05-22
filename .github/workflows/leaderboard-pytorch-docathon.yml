@@ -31,7 +31,7 @@ jobs:
 
     - name: Run leaderboard script
       run: |
-        python3 ./.github/workflows/leaderboard.py
+        python3 ./.github/workflows/leaderboard-pytorch-docathon.py
     - name: push
       uses: actions-x/commit@v6
       with: 
