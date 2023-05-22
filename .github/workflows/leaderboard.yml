@@ -32,11 +32,8 @@ jobs:
     - name: Run leaderboard script
       run: |
         python3 ./.github/workflows/leaderboard.py
-      env:
-        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
     - name: push
       uses: actions-x/commit@v6
       with: 
         branch: main
         directory: ./
-        token: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
