@@ -1,79 +1,41 @@
-name: Add Labels to Pull Requests
+name: Label pull requests
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
-  add-labels:
+  label_pull_requests:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install Dependencies
-        run: npm install @actions/github @octokit/rest
-
-      - name: Add Labels to Pull Requests
+      - name: Propagate labels to pull requests
+        uses: actions/github-script@v6
         env:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
-        run: |
-          node - <<EOF
-          const { Octokit } = require("@octokit/rest");
-
-          async function addLabelsToPullRequests() {
-            const octokit = new Octokit({
-              auth: process.env.GITHUB_TOKEN
-            });
-
-            const { owner, repo } = process.env.GITHUB_REPOSITORY;
-            const { data: pullRequests } = await octokit.pulls.list({
-              owner,
-              repo
-            });
-
-            for (const pr of pullRequests) {
-              const { number, body } = pr;
-
-              const issueNumbers = body.match(/#(\d+)/g);
-              if (!issueNumbers) continue;
-
-              const labelsToAdd = [];
-
-              for (const issueNumber of issueNumbers) {
-                const issueId = parseInt(issueNumber.replace("#", ""), 10);
-
-                const { data: issue } = await octokit.issues.get({
-                  owner,
-                  repo,
-                  issue_number: issueId
-                });
-
-                if (issue.labels) {
-                  labelsToAdd.push(...issue.labels.map(label => label.name));
-                }
-              }
-
-              if (labelsToAdd.length > 0) {
-                await octokit.issues.addLabels({
-                  owner,
-                  repo,
-                  issue_number: number,
-                  labels: labelsToAdd
-                });
-              }
+        with:
+          script: |
+            const issue = context.issue;
+            const issueNumber = issue.number;
+            const issueLabels = issue.labels && issue.labels.length > 0 ? issue.labels.map(label => label.name) : [];
+            
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: issue.owner,
+              repo: issue.repo,
+              state: 'open',
+              head: `${issue.owner}:${issueNumber}`,
+            });   
+            for (const pullRequest of pullRequests) {
+              // Add labels to each pull request
+              await github.rest.issues.addLabels({
+                owner: pullRequest.base.user.login,
+                repo: pullRequest.base.repo.name,
+                issue_number: pullRequest.number,
+                labels: issueLabels
+              });
             }
-          }
-
-          addLabelsToPullRequests().catch(error => {
-            console.error("Error occurred:", error);
-            process.exit(1);
-          });
-          EOF
