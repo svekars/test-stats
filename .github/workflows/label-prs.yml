@@ -20,14 +20,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: |
-            const pr = context.payload.pull_request;
-            const issueNumber = pr.number;
-            const issueLabels = pr.labels.map(label => label.name);
+            const issue = context.issue;
+            const issueNumber = issue.number;
+            const issueLabels = issue.labels.map(label => label.name);
             
-            // Add labels to the pull request
             await github.rest.issues.addLabels({
-              owner: pr.base.user.login,
-              repo: pr.base.repo.name,
-              issue_number: issueNumber,
+              owner: pullRequest.base.user.login,
+              repo: pullRequest.base.repo.name,
+              issue_number: pullRequest.number,
               labels: issueLabels
             });
