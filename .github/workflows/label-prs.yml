@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Propagate labels to pull requests
         uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: |
             const pr = context.payload.pull_request;
