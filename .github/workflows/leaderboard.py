@@ -28,10 +28,11 @@ def get_pull_requests(owner, repo):
         "base": "main",
         "labels": "easy,medium,advanced",
         "per_page": 100
+        "q": "is:merged"
     }
     response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
     pull_requests = response.json()
-    return [pr for pr in pull_requests if "merged" in pr and pr["merged"]]  # Only consider merged pull requests
+    return pull_requests
     
 author_data = {}
 
