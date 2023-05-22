@@ -33,6 +33,13 @@ def get_pull_requests(owner, repo):
     response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
     pull_requests = response.json()
     return pull_requests
+
+    merged_pull_requests = []
+    for pr in pull_requests:
+        if pr.get("merged", False):
+            merged_pull_requests.append(pr)
+    
+    return merged_pull_requests
     
 author_data = {}
 
