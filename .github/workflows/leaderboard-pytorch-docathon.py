@@ -4,9 +4,9 @@ import csv
 
 token = os.environ.get("GITHUB_TOKEN")
 
-url = "https://api.github.com/repos/{owner}/{repo}/pulls?state=closed"
+base_url = 'https://api.github.com'
 
-#add least of repositories
+#add list of repositories
 repositories = [
     {"owner": "pytorch", "repo": "tutorials"},
     {"owner": "pytorch", "repo": "examples"}
@@ -19,6 +19,7 @@ label_points = {
 }
 
 def get_pull_requests(owner, repo):
+    url = f'{base_url}/repos/{owner}/{repo}/pulls?state=closed'
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github.v3+json"
@@ -27,11 +28,13 @@ def get_pull_requests(owner, repo):
         "state": "closed",
         "base": "main",
         "labels": "easy,medium,advanced",
-        "per_page": 100
+        "per_page": 100,
     }
     response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
-    return response.json()
-    
+    pull_requests = response.json()
+    merged_pull_requests = [pr for pr in pull_requests if pr.get("merged_at")]
+    return merged_pull_requests
+
 author_data = {}
 
 for repository in repositories:
@@ -80,10 +83,10 @@ for author, data in sorted_authors:
     points = data["points"]
     pr_links = f"{', '.join(data['pr_links'])} |"
     markdown_table += f"| {author} | {points} | {pr_links} \n"
-    
+
 markdown_filename = "leaderboard-pytorch-docathon.md"
 
 with open(markdown_filename, "w", newline="") as file:
     file.write(markdown_table)
 
-print(f"Leaderoard saved to {markdown_filename}") 
+print(f"Leaderoard saved to {markdown_filename}")
