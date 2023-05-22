@@ -25,6 +25,7 @@ jobs:
 
       - name: Add Labels to Pull Requests
         run: |
+          node - <<EOF
           const { Octokit } = require("@octokit/rest");
 
           async function addLabelsToPullRequests() {
@@ -75,3 +76,4 @@ jobs:
             console.error("Error occurred:", error);
             process.exit(1);
           });
+          EOF
