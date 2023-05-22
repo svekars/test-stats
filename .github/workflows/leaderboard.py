@@ -19,6 +19,7 @@ label_points = {
 }
 
 def get_pull_requests(owner, repo):
+    url = f'{base_url}/repos/{owner}/{repo}/pulls?state=closed'
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github.v3+json"
@@ -26,18 +27,26 @@ def get_pull_requests(owner, repo):
     params = {
         "state": "closed",
         "base": "main",
-        "labels": "easy,medium,advanced",
+        "labels": "test,easy,medium,advanced",
         "per_page": 100,
-        "q": "is:merged"
     }
-    response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
-    pull_requests = response.json()
-    merged_pull_requests = []
-    for pr in pull_requests:
-        if pr.get("merged", False):
-            merged_pull_requests.append(pr)
     
-    return merged_pull_requests
+    response = requests.get(url, headers=headers, params=params)
+    pull_requests = []
+    if response.status_code == 200:
+        data = response.json()
+        for pull_request in data:
+            labels = [label['name'] for label in pull_request['labels']]
+            if 'test' in labels and any(label in labels for label in ['easy', 'medium', 'advanced']):
+                if pull_request.get('merged', False):
+                    pr_number = pull_request['number']
+                    pr_url = pull_request['html_url']
+                    title = pull_request['title']
+                    pull_requests.append((pr_number, title, pr_url))
+    else:
+        print(f'Error: {response.status_code} - {response.text}')
+
+    return pull_requests
     
 author_data = {}
 
