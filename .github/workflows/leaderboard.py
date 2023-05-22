@@ -30,7 +30,7 @@ def get_pull_requests(owner, repo):
         "per_page": 100
     }
     response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
-    return response.json()
+    return [pr for pr in response.json() if pr["merged"]]
     
 author_data = {}
 
