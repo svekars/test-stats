@@ -29,9 +29,7 @@ jobs:
               repo: issue.repo,
               state: 'open',
               head: `${issue.owner}:${issueNumber}`,
-            });
-            
-            
+            });   
             for (const pullRequest of pullRequests) {
               // Add labels to each pull request
               await github.rest.issues.addLabels({
@@ -39,5 +37,5 @@ jobs:
                 repo: pullRequest.base.repo.name,
                 issue_number: pullRequest.number,
                 labels: issueLabels
-            });
-          }
+              });
+            }
