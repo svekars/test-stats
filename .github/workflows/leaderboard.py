@@ -27,7 +27,7 @@ def get_pull_requests(owner, repo):
         "state": "closed",
         "base": "main",
         "labels": "easy,medium,advanced",
-        "per_page": 100
+        "per_page": 100,
         "q": "is:merged"
     }
     response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
