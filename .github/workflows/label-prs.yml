@@ -2,10 +2,10 @@ name: Label pull requests
 
 on:
   workflow_dispatch:
-  pull_request:
+  issues:
     types:
+      - reopened
       - opened
-      - synchronize
 
 jobs:
   label_pull_requests:
@@ -16,26 +16,35 @@ jobs:
     steps:
       - name: Propagate labels to pull requests
         uses: actions/github-script@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: |
             const issue = context.issue;
             const issueNumber = issue.number;
-            const issueLabels = issue.labels && issue.labels.length > 0 ? issue.labels.map(label => label.name) : [];
+            const issueLabels = issue.labels.map(label => label.name);
             
+            // Get the pull requests that reference the issue
             const { data: pullRequests } = await github.rest.pulls.list({
               owner: issue.owner,
               repo: issue.repo,
-              state: 'open',
-              head: `${issue.owner}:${issueNumber}`,
-            });   
+              state: 'open'
+            });
+            
             for (const pullRequest of pullRequests) {
-              // Add labels to each pull request
-              await github.rest.issues.addLabels({
+              const prNumber = pullRequest.number;
+              
+              const { data: issueComments } = await github.rest.issues.listComments({
                 owner: pullRequest.base.user.login,
                 repo: pullRequest.base.repo.name,
-                issue_number: pullRequest.number,
-                labels: issueLabels
+                issue_number: prNumber
               });
+              
+              const issueReferenced = issueComments.some(comment => comment.body.includes(`#${issueNumber}`));
+              
+              if (issueReferenced) {
+                await github.rest.issues.addLabels({
+                  owner: pullRequest.base.user.login,
+                  repo: pullRequest.base.repo.name,
+                  issue_number: prNumber,
+                });
+              }
             }
