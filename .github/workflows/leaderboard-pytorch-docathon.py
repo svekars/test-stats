@@ -47,7 +47,7 @@ for repository in repositories:
             continue
 
         labels = [label["name"] for label in pr["labels"]]
-        if "test" in labels:
+        if "docathon-h1-2023" in labels:
             points = sum(label_points[label] for label in labels if label in label_points)
             pr_url = pr["html_url"]
 
