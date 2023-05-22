@@ -1,0 +1,30 @@
+name: Label pull requests
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  label_pull_requests:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Propagate labels to pull requests
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const issueNumber = pr.number;
+            const issueLabels = pr.labels.map(label => label.name);
+            
+            // Add labels to the pull request
+            await github.rest.issues.addLabels({
+              owner: pr.base.user.login,
+              repo: pr.base.repo.name,
+              issue_number: issueNumber,
+              labels: issueLabels
+            });
