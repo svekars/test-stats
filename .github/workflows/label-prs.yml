@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   add-labels:
@@ -24,6 +22,8 @@ jobs:
         run: npm install @actions/github @octokit/rest
 
       - name: Add Labels to Pull Requests
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         run: |
           node - <<EOF
           const { Octokit } = require("@octokit/rest");
