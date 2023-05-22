@@ -1,4 +1,4 @@
-name: Leaderboard
+name: Leaderboard PyTorch Docathon
 
 on:
   workflow_dispatch:
