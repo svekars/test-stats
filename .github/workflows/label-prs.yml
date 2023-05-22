@@ -1,11 +1,10 @@
 name: Label pull requests
 
 on:
-  workflow_dispatch:
-  pull_request:
+  issues:
     types:
+      - reopened
       - opened
-      - synchronize
 
 jobs:
   label_pull_requests:
@@ -16,26 +15,29 @@ jobs:
     steps:
       - name: Propagate labels to pull requests
         uses: actions/github-script@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
           script: |
             const issue = context.issue;
             const issueNumber = issue.number;
-            const issueLabels = issue.labels && issue.labels.length > 0 ? issue.labels.map(label => label.name) : [];
+            const issueLabels = issue.labels.map(label => label.name);
             
-            const { data: pullRequests } = await github.rest.pulls.list({
+            // Get the pull requests that reference the issue
+            const { data: pullRequests } = await github.rest.issues.listEvents({
               owner: issue.owner,
               repo: issue.repo,
-              state: 'open',
-              head: `${issue.owner}:${issueNumber}`,
-            });   
-            for (const pullRequest of pullRequests) {
-              // Add labels to each pull request
-              await github.rest.issues.addLabels({
-                owner: pullRequest.base.user.login,
-                repo: pullRequest.base.repo.name,
-                issue_number: pullRequest.number,
-                labels: issueLabels
-              });
+              issue_number: issueNumber
+            });
+            
+            for (const event of pullRequests) {
+              if (event.event === 'cross-referenced' && event.source && event.source.issue && event.source.issue.pull_request) {
+                const prNumber = event.source.issue.number;
+                
+                // Add labels to the pull request
+                await github.rest.issues.addLabels({
+                  owner: issue.owner,
+                  repo: issue.repo,
+                  issue_number: prNumber,
+                  labels: issueLabels
+                });
+              }
             }
