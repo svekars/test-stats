@@ -82,7 +82,7 @@ markdown_table += "|--- | --- | ---|\n"
 for author, data in sorted_authors:
     points = data["points"]
     pr_links = f"{', '.join(data['pr_links'])} |"
-    markdown_table += f"| {author} | {points} | {pr_links} \n"
+    markdown_table += f"| {author} | {points} | {pr_links} |\n"
 
 markdown_filename = "leaderboard.md"
 
