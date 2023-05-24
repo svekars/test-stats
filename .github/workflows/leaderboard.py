@@ -30,10 +30,13 @@ def get_pull_requests(owner, repo):
         "labels": "easy,medium,advanced",
         "per_page": 100,
     }
-    response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
-    pull_requests = response.json()
-    merged_pull_requests = [pr for pr in pull_requests if pr.get("merged_at")]
-    return merged_pull_requests
+    merged_pull_requests = []
+    for page in range(1, 6):
+        params["page"] = page
+        response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
+        pull_requests = response.json()
+        merged_pull_requests += [pr for pr in pull_requests if pr.get("merged_at")]
+    
 
 author_data = {}
 
