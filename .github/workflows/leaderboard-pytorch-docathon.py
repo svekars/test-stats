@@ -72,7 +72,7 @@ for author, data in sorted_authors:
     pr_links = ",\n".join(data["pr_links"])
     csv_data.append((author, points, pr_links))
 
-csv_filename = "leaderboard-pytorch-docathon.csv"
+csv_filename = "./pytorch/leaderboard-pytorch-docathon.csv"
 
 with open(csv_filename, "w", newline="") as file:
     writer = csv.writer(file)
@@ -87,7 +87,7 @@ for author, data in sorted_authors:
     pr_links = f"{', '.join(data['pr_links'])} |"
     markdown_table += f"| {author} | {points} | {pr_links} \n"
 
-markdown_filename = "leaderboard-pytorch-docathon.md"
+markdown_filename = "./pytorch/leaderboard-pytorch-docathon.md"
 
 with open(markdown_filename, "w", newline="") as file:
     file.write(markdown_table)
