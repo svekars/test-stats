@@ -6,6 +6,11 @@ token = os.environ.get("GITHUB_TOKEN")
 
 base_url = 'https://api.github.com'
 
+dir = "./pytorch"
+
+os.makedirs(dir, exist_ok=True)
+print(f"Directory '{dir}' created." if os.path.exists(dir) else f"Directory '{dir}' already exists.")
+
 #add list of repositories
 repositories = [
     {"owner": "pytorch", "repo": "tutorials"},
