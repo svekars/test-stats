@@ -36,8 +36,8 @@ def get_pull_requests(owner, repo):
         response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
         pull_requests = response.json()
         merged_pull_requests += [pr for pr in pull_requests if pr.get("merged_at")]
+    return merged_pull_requests
     
-
 author_data = {}
 
 for repository in repositories:
