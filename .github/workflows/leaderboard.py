@@ -78,7 +78,7 @@ with open(csv_filename, "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerows(csv_data)
 
-print(f"Leaderoard saved to {csv_filename}")
+print(f"Leaderboard saved to {csv_filename}")
 
 markdown_table = "| Author | Points | PR |\n"
 markdown_table += "|--- | --- | ---|\n"
@@ -92,4 +92,4 @@ markdown_filename = "leaderboard.md"
 with open(markdown_filename, "w", newline="") as file:
     file.write(markdown_table)
 
-print(f"Leaderoard saved to {markdown_filename}")
+print(f"Leaderboard saved to {markdown_filename}")
