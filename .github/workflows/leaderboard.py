@@ -31,7 +31,7 @@ def get_pull_requests(owner, repo):
         "per_page": 100,
     }
     merged_pull_requests = []
-    for page in range(1, 6):
+    for page in range(1, 6): #adding pagination to bypass 100 requests limitation of GitHub API
         params["page"] = page
         response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
         pull_requests = response.json()
