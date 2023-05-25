@@ -28,6 +28,6 @@ jobs:
         run: echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
 
       - name: Sync labels
-        run: python label_sync.py ${{ steps.pr.outputs.pr_number }}
+        run: python .github/workflows/label_sync.py ${{ steps.pr.outputs.pr_number }}
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
