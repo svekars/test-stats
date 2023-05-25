@@ -25,9 +25,9 @@ jobs:
         
       - name: Get pull request number
         id: pr
-        run: echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
+        run: echo "::set-env name=PR_NUMBER::${{ github.event.pull_request.number }}"
 
       - name: Sync labels
-        run: python ./.github/workflows/label_sync.py ${{ steps.pr.outputs.pr_number }}
+        run: python label_sync.py ${{ env.PR_NUMBER }}
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
