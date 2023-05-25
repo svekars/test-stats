@@ -20,7 +20,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const { issue, pull_request: pr } = context.payload;
+            const { pull_request: pr } = context.payload;
 
             const issueRef = pr.body.match(/#(\d+)/);
             if (!issueRef) {
