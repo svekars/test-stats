@@ -20,34 +20,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const prNumber = context.payload.pull_request.number;
-
-            const { data: prData } = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-            });
-
-            const issueRef = prData.body.match(/Fixes #(\d+)/);
-            if (!issueRef) {
-              console.log('No issue reference found in the PR body');
-              return;
+            const prBody = context.payload.pull_request.body
+            const matchIssue = prBody.match(/#(\d+)/)
+            if (!matchIssue || matchIssue.length <= 1) {
+              console.log('No issues are associated with this PR found')
             }
-
-            const issueNumber = issueRef[1];
-
-            const { data: issueData } = await github.issues.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-            });
-
-            const labels = issueData.labels.map((label) => label.name);
-
-            await github.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              labels,
-            });
-
+            else {
+              const linkedIssue = matches[1]
+              const labels = await github.rest.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: linkedIssue
+              })
+              if(labels.data.length == 0) {
+                console.log(`No labels on the issue #${linkedIssue}`)
+              }
+              else {
+                const labels = labels.data.map(item => item.name)
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  labels: labels
+                })
+                console.log('Adding labels', labels)
+              }
+            }
