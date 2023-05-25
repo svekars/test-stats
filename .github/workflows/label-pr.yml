@@ -1,5 +1,6 @@
 name: Propagate labels
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - opened
@@ -20,4 +21,4 @@ jobs:
         run: pip install PyGithub
 
       - name: Sync labels
-        run: python label_sync.py
+        run: python ./.github/workflows/label_sync.py
