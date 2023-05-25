@@ -22,6 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: pip install PyGithub
+        
+      - name: Get pull request number
+        id: pr
+        run: echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
 
       - name: Sync labels
         run: python ./.github/workflows/label_sync.py
