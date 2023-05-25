@@ -5,7 +5,7 @@ token = os.environ['GITHUB_TOKEN']
 
 g = Github(token)
 
-pr_number = os.environ['PR_NUMBER']
+pr_number = os.environ['INPUT_PR_NUMBER']
 
 repo = g.get_repo(os.environ['GITHUB_REPOSITORY'])
 pr = repo.get_pull(int(pr_number))
