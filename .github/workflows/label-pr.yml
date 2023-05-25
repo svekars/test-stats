@@ -29,3 +29,5 @@ jobs:
 
       - name: Sync labels
         run: python ./.github/workflows/label_sync.py ${{ steps.pr.outputs.pr_number }}
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
