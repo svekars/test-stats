@@ -20,27 +20,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const name: Label Sync
-
-on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-
-jobs:
-  label-sync:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Sync labels
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
             const { context, github } = require('@actions/github');
 
             const prNumber = context.payload.pull_request.number;
