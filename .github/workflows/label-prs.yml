@@ -20,9 +20,38 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const { pull_request: pr } = context.payload;
+            const name: Label Sync
 
-            const issueRef = pr.body.match(/#(\d+)/);
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  label-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Sync labels
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { context, github } = require('@actions/github');
+
+            const prNumber = context.payload.pull_request.number;
+
+            const { data: prData } = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
+            const issueRef = prData.body.match(/Fixes #(\d+)/);
             if (!issueRef) {
               console.log('No issue reference found in the PR body');
               return;
@@ -41,6 +70,7 @@ jobs:
             await github.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: pr.number,
+              issue_number: prNumber,
               labels,
             });
+
