@@ -7,7 +7,7 @@ token = os.environ.get('GITHUB_TOKEN')
 
 repo_owner = "svekars"
 repo_name = "test-stats"
-pull_request_number = os.environ['PR_NUMBER']
+pull_request_number = int(sys.argv[1])
 
 g = Github(token)
 repo = g.get_repo(f'{repo_owner}/{repo_name}')
