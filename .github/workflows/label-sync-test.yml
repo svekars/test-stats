@@ -22,7 +22,7 @@ jobs:
           pip install requests
           pip install PyGithub
       - name: Set up env var
-        run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+        run: echo "PR_NUMBER=$((${{ github.event.pull_request.number }}))" >> $GITHUB_ENV
       - name: Run Python script
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
