@@ -3,13 +3,13 @@ from github import Github
 import sys
 import re
 
-access_token = os.environ.get('GITHUB_TOKEN')
+token = os.environ.get('GITHUB_TOKEN')
 
 repo_owner = "svekars"
 repo_name = "test-stats"
 pull_request_number = os.environ['PR_NUMBER']
 
-g = Github(access_token)
+g = Github(token)
 repo = g.get_repo(f'{repo_owner}/{repo_name}')
 pull_request = repo.get_pull(pull_request_number)
 pull_request_body = pull_request.body
@@ -24,8 +24,13 @@ if re.search(r'#\d{1,5}', pull_request_body):
     if test_label_present:
         pull_request_labels = pull_request.get_labels()
         issue_label_names = [label.name for label in issue_labels]
-        pull_request.set_labels(*issue_label_names)
-        print("Labels added to the pull request!")
+        
+        labels_to_add = [label for label in issue_label_names if label not in pull_request_labels]
+        if labels_to_add:
+            pull_request.set_labels(*issue_label_names)
+            print("Labels added to the pull request!")
+        else:
+            print("The pull request already has the same labels.")
     else:
         print("The 'test' label is not present in the issue.")
 else:
