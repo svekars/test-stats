@@ -1,33 +1,37 @@
-import requests
 import os
+from github import Github
+import sys
+import re
 
-pr_number = os.getenv("GITHUB_REF").split("/")[-1]
-pr_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/pulls/{pr_number}"
+token = os.environ.get('GITHUB_TOKEN')
 
-response = requests.get(pr_url)
-response.raise_for_status()
-pr_data = response.json()
-issue_number = None
+repo_owner = "svekars"
+repo_name = "test-stats"
+pull_request_number = os.environ['PR_NUMBER']
 
-if pr_data["body"]:
-    for word in pr_data["body"].split():
-        if word.startswith("#"):
-            issue_number = word.strip("#")
-            break
+g = Github(token)
+repo = g.get_repo(f'{repo_owner}/{repo_name}')
+pull_request = repo.get_pull(pull_request_number)
+pull_request_body = pull_request.body
 
-if issue_number:
-    # Get the labels of the referenced issue
-    issue_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/issues/{issue_number}"
-    response = requests.get(issue_url)
-    response.raise_for_status()
-    issue_data = response.json()
-    
-    if "test" in [label["name"] for label in issue_data["labels"]]:
-        # Assign labels from the issue to the pull request
-        labels_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/issues/{pr_number}/labels"
-        labels = [label["name"] for label in issue_data["labels"]]
-        payload = {"labels": labels}
-        response = requests.post(labels_url, json=payload, headers={"Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"})
-        response.raise_for_status()
+if re.search(r'#\d{1,5}', pull_request_body):
+    # Extract the issue number
+    issue_number = int(re.findall(r'#(\d{1,5})', pull_request_body)[0])
+    issue = repo.get_issue(issue_number)
+    issue_labels = issue.labels
+    test_label_present = any(label.name == 'test' for label in issue_labels)
+
+    if test_label_present:
+        pull_request_labels = pull_request.get_labels()
+        issue_label_names = [label.name for label in issue_labels]
+        
+        labels_to_add = [label for label in issue_label_names if label not in pull_request_labels]
+        if labels_to_add:
+            pull_request.set_labels(*issue_label_names)
+            print("Labels added to the pull request!")
+        else:
+            print("The pull request already has the same labels.")
     else:
-        print(f"No 'test' label in issue #{issue_number}")
+        print("The 'test' label is not present in the issue.")
+else:
+    print("The pull request does not mention an issue.")

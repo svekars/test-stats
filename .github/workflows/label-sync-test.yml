@@ -2,7 +2,7 @@ name: Pull Request Label Check
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, edited]
 
 jobs:
   check-labels:
@@ -18,7 +18,9 @@ jobs:
         with:
           python-version: 3.x
       - name: Install dependencies
-        run: pip install requests
+        run: | 
+          pip install requests
+          pip install PyGithub
       - name: Run Python script
         run: python ./.github/workflows/label-sync-test.py
         env:
