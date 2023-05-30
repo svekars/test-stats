@@ -25,6 +25,6 @@ jobs:
         run: echo "PR_NUMBER=$((${{ github.event.pull_request.number }}))" >> $GITHUB_ENV
       - name: Run Python script
         env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python ./.github/workflows/label-sync-test.py $PR_NUMBER
         
