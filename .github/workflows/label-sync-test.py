@@ -27,7 +27,7 @@ if re.search(r'#\d{1,5}', pull_request_body):
         
         labels_to_add = [label for label in issue_label_names if label not in pull_request_labels]
         if labels_to_add:
-            pull_request.set_labels(*issue_label_names)
+            pull_request.set_labels(*labels_to_add)
             print("Labels added to the pull request!")
         else:
             print("The pull request already has the same labels.")
