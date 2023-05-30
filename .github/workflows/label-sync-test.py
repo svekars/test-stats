@@ -4,9 +4,8 @@ import re
 
 access_token = os.environ.get('GITHUB_TOKEN')
 
-# Replace with the repository owner, repository name, and pull request number
-repo_owner = context.repo.owner
-repo_name = context.repo.repo
+repo_owner = "svekars"
+repo_name = "test-stats"
 pull_request_number = context.payload['pull_request']['number']
 
 g = Github(access_token)
