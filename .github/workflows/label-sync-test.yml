@@ -1,0 +1,25 @@
+name: Pull Request Label Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  check-labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR mentions an issue and get labels
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run Python script
+        run: python ./github/workflows/label-sync-test.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
