@@ -7,7 +7,7 @@ access_token = os.environ.get('GITHUB_TOKEN')
 
 repo_owner = "svekars"
 repo_name = "test-stats"
-pull_request_number = int(context.payload['number'])
+pull_request_number = os.environ['PR_NUMBER']
 #pull_request_number = context.payload['pull_request']['number']
 
 g = Github(access_token)
