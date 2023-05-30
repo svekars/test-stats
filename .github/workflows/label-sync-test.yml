@@ -20,6 +20,6 @@ jobs:
       - name: Install dependencies
         run: pip install requests
       - name: Run Python script
-        run: python ./github/workflows/label-sync-test.py
+        run: python ./.github/workflows/label-sync-test.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
