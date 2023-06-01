@@ -1,2 +1,6 @@
 | Author | Points | PR |
 |--- | --- | ---|
+| frasertajima | 6 | https://github.com/pytorch/tutorials/pull/2370, https://github.com/pytorch/tutorials/pull/2368, https://github.com/pytorch/tutorials/pull/2363 | 
+| NeoKish | 4 | https://github.com/pytorch/tutorials/pull/2364, https://github.com/pytorch/tutorials/pull/2361 | 
+| Suhas-G | 2 | https://github.com/pytorch/tutorials/pull/2371 | 
+| TheMemoryDealer | 2 | https://github.com/pytorch/tutorials/pull/2369 | 
