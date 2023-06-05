@@ -62,9 +62,9 @@ for repository in repositories:
             repo_key = f"{owner}/{repo}"
             pr_number = pr["number"]
             if repo_key in half_point_pr_numbers and pr_number in half_point_pr_numbers[repo_key]:
-                points = sum(label_points[label] *  0.5 if label in label_points else 0 for label in label)
+                points = sum(label_points[label] *  0.5 if label in label_points else 0 for label in labels)
             else:
-                points = sum(label_points[label] if label in label_points else 0 for label in label)
+                points = sum(label_points[label] if label in label_points else 0 for label in labels)
             pr_url = pr["html_url"]
             
 
