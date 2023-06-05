@@ -18,6 +18,11 @@ label_points = {
     "advanced": 15
 }
 
+half_point_pr_numbers = {
+    "svekars/test-stats": [8, 11]
+}
+
+
 def get_pull_requests(owner, repo):
     url = f'{base_url}/repos/{owner}/{repo}/pulls?state=closed'
     headers = {
@@ -56,13 +61,17 @@ for repository in repositories:
         if "test" in labels:
             points = sum(label_points[label] for label in labels if label in label_points)
             pr_url = pr["html_url"]
+            
+            repo_key = f"{owner}/{repo}"
+            pr_number = pr["number"]
+            if repo_key in half_point_pr_numbers and pr_number in half_point_pr_numbers[repo_key]:
+                points /= 2  # Grant half points to the PRs listed in half_point_pr_numbers
 
             if author in author_data:
                 author_data[author]["points"] += points
                 author_data[author]["pr_links"].append(pr_url)
             else:
                 author_data[author] = {"points": points, "pr_links": [pr_url]}
-            #author_points[author] = author_points.get(author, 0) + points
 
 sorted_authors = sorted(author_data.items(), key=lambda x: x[1]["points"], reverse=True)
 
