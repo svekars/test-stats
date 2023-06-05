@@ -59,13 +59,14 @@ for repository in repositories:
 
         labels = [label["name"] for label in pr["labels"]]
         if "test" in labels:
-            points = sum(label_points[label] for label in labels if label in label_points)
-            pr_url = pr["html_url"]
-            
             repo_key = f"{owner}/{repo}"
             pr_number = pr["number"]
             if repo_key in half_point_pr_numbers and pr_number in half_point_pr_numbers[repo_key]:
-                points /= 2  # Grant half points to the PRs listed in half_point_pr_numbers
+                points = sum(label_points[label] * 0.5 for label in labels if label in label_points)
+            else:
+                points = sum(label_points[label] for label in labels if label in label_points)
+            pr_url = pr["html_url"]
+            
 
             if author in author_data:
                 author_data[author]["points"] += points
