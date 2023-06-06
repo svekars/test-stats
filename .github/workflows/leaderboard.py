@@ -18,10 +18,10 @@ label_points = {
     "advanced": 15
 }
 
-half_point_pr_numbers = {
-    "svekars/test-stats": [8, 11]
-}
-
+manual_pull_requests = [
+     {"repo": "test-stats", "pr_number": "8", "author": "svekars", "label": "easy"},
+     {"repo": "test-stats", "pr_number": "11", "author": "svekars", "label": "medium"}
+]
 
 def get_pull_requests(owner, repo):
     url = f'{base_url}/repos/{owner}/{repo}/pulls?state=closed'
@@ -59,20 +59,31 @@ for repository in repositories:
 
         labels = [label["name"] for label in pr["labels"]]
         if "test" in labels:
-            repo_key = f"{owner}/{repo}"
-            pr_number = pr["number"]
-            if repo_key in half_point_pr_numbers and pr_number in half_point_pr_numbers[repo_key]:
-                points = sum(label_points[label] *  0.5 if label in label_points else 0 for label in labels)
-            else:
-                points = sum(label_points[label] if label in label_points else 0 for label in labels)
+            points = sum(label_points[label] for label in labels if label in label_points)
             pr_url = pr["html_url"]
-            
 
             if author in author_data:
                 author_data[author]["points"] += points
                 author_data[author]["pr_links"].append(pr_url)
             else:
                 author_data[author] = {"points": points, "pr_links": [pr_url]}
+            
+for pr in manual_pull_requests:
+     pr_number = pr["pr_number"]
+     repo = pr["repo"]
+     author = pr["author"]
+     label = pr["label"]
+
+     points = label_points.get(label, 0)
+     if author in author_data:
+         points = (points + 1) // 2 # Give half points to the PRs listed in manual_pull_requests
+     pr_url = f"https://github.com/{owner}/{repo}/pull/{pr_number}"
+
+     if author in author_data:
+         author_data[author]["points"] += points
+         author_data[author]["pr_links"].append(pr_url)
+     else:
+         author_data[author] = {"points": points, "pr_links": [pr_url]}
 
 sorted_authors = sorted(author_data.items(), key=lambda x: x[1]["points"], reverse=True)
 
