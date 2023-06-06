@@ -7,6 +7,7 @@
 | kiersten-stokes | 7 | https://github.com/pytorch/tutorials/pull/2401, https://github.com/pytorch/tutorials/pull/2398 | 
 | JoseLuisC99 | 6 | https://github.com/pytorch/tutorials/pull/2404, https://github.com/pytorch/tutorials/pull/2403, https://github.com/pytorch/tutorials/pull/2372 | 
 | frasertajima | 6 | https://github.com/pytorch/tutorials/pull/2370, https://github.com/pytorch/tutorials/pull/2368, https://github.com/pytorch/tutorials/pull/2363 | 
+| bjhargrave | 5 | https://github.com/pytorch/tutorials/pull/2423 | 
 | arunppsg | 5 | https://github.com/pytorch/tutorials/pull/2384 | 
 | HemanthSai7 | 5 | https://github.com/pytorch/tutorials/pull/2375 | 
 | mikebrow | 5 | https://github.com/pytorch/tutorials/pull/2374 | 
