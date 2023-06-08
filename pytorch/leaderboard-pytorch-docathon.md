@@ -12,6 +12,7 @@
 | HemanthSai7 | 5 | https://github.com/pytorch/tutorials/pull/2375 | 
 | mikebrow | 5 | https://github.com/pytorch/tutorials/pull/2374 | 
 | NeoKish | 4 | https://github.com/pytorch/tutorials/pull/2364, https://github.com/pytorch/tutorials/pull/2361 | 
+| Samsonboadi | 2 | https://github.com/pytorch/tutorials/pull/2406 | 
 | neuralninja27 | 2 | https://github.com/pytorch/tutorials/pull/2381 | 
 | akjalok | 2 | https://github.com/pytorch/tutorials/pull/2380 | 
 | tcNickolas | 2 | https://github.com/pytorch/tutorials/pull/2378 | 
