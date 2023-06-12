@@ -1,6 +1,7 @@
 import os
 import requests
 import csv
+from datetime import datetime
 
 token = os.environ.get("GITHUB_TOKEN")
 
@@ -40,6 +41,14 @@ def get_pull_requests(owner, repo):
         params["page"] = page
         response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
         pull_requests = response.json()
+        for pr in pull_requests:
+            merged_at = pr.get("merged_at")
+            if merged_at:
+                merged_date = datetime.strptime(merged_at, "%Y-%m-%dT%H:%M:%SZ").date()
+                start_date = datetime(2022, 7, 22).date()
+                end_date = datetime(2023, 5, 1).date()
+                if start_date <= merged_date <= end_date:
+                    merged_pull_requests.append(pr)
         merged_pull_requests += [pr for pr in pull_requests if pr.get("merged_at")]
     return merged_pull_requests
     
