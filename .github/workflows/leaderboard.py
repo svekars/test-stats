@@ -51,13 +51,12 @@ def get_pull_requests(owner, repo):
                 merged_date = datetime.strptime(merged_at, "%Y-%m-%dT%H:%M:%SZ").date()
 
                 start_open_date = datetime(2023, 5, 31).date()
-                end_open_date = datetime(2023, 5, 11).date()
                 start_merge_date = datetime(2023, 5, 31).date()
                 end_merge_date = datetime(2023, 6, 15).date()
 
                 pst = timezone("US/Pacific")
                 start_open_date = pst.localize(datetime.combine(start_open_date, datetime.min.time()))
-                end_open_date = pst.localize(datetime.combine(end_open_date, datetime(17, 0)))
+                end_open_date = pst.localize(datetime.combine(2023, 5, 11), datetime(17, 0)))
                 start_merge_date = pst.localize(datetime.combine(start_merge_date, datetime.min.time()))
                 end_merge_date = pst.localize(datetime.combine(end_merge_date, datetime.max.time()))
 
