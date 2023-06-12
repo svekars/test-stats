@@ -47,8 +47,8 @@ def get_pull_requests(owner, repo):
             opened_at = pr.get("created_at")
             merged_at = pr.get("merged_at")
             if opened_at and merged_at:
-                opened_date = datetime.strptime(opened_at, "%Y-%m-%dT%H:%M:%SZ").date()
-                merged_date = datetime.strptime(merged_at, "%Y-%m-%dT%H:%M:%SZ").date()
+                opened_datetime = datetime.strptime(opened_at, "%Y-%m-%dT%H:%M:%SZ")
+                merged_datetime = datetime.strptime(merged_at, "%Y-%m-%dT%H:%M:%SZ")
 
                 start_open_date = datetime(2023, 5, 31, 0, 0)
                 end_open_date = datetime(2023, 5, 11, 17, 0)
@@ -61,7 +61,7 @@ def get_pull_requests(owner, repo):
                 start_merge_datetime = pst.localize(start_merge_date)
                 end_merge_datetime = pst.localize(end_merge_date)
 
-                if start_open_datetime <= opened_date <= end_open_datetime and start_merge_datetime <= merged_date <= end_merge_datetime:
+                if start_open_datetime <= opened_datetime <= end_open_datetime and start_merge_datetime <= merged_datetime <= end_merge_datetime:
                     merged_pull_requests.append(pr)
     return merged_pull_requests
     
