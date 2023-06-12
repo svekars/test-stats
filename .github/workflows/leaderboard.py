@@ -9,8 +9,8 @@ base_url = 'https://api.github.com'
 
 #add list of repositories
 repositories = [
-    {"owner": "svekars", "repo": "test-stats"},
-    {"owner": "svekars", "repo": "odyssey-project"}
+    {"owner": "pytorch", "repo": "tutorials"},
+    {"owner": "pytorch", "repo": "examples"}
 ]
 
 label_points = {
@@ -42,12 +42,24 @@ def get_pull_requests(owner, repo):
         response = requests.get(url.format(owner=owner, repo=repo), headers=headers, params=params)
         pull_requests = response.json()
         for pr in pull_requests:
+            opened_at = pr.get("created_at")
             merged_at = pr.get("merged_at")
-            if merged_at:
+            if opened_at and merged_at:
+                opened_date = datetime.strptime(opened_at, "%Y-%m-%dT%H:%M:%SZ").date()
                 merged_date = datetime.strptime(merged_at, "%Y-%m-%dT%H:%M:%SZ").date()
-                start_date = datetime(2022, 7, 15).date()
-                end_date = datetime(2023, 5, 1).date()
-                if start_date <= merged_date <= end_date:
+
+                start_open_date = datetime(2023, 5, 31).date()
+                end_open_date = datetime(2023, 5, 11).date()
+                start_merge_date = datetime(2023, 5, 31).date()
+                end_merge_date = datetime(2023, 6, 15).date()
+
+                pst = timezone("US/Pacific")
+                start_open_date = pst.localize(datetime.combine(start_open_date, datetime.min.time()))
+                end_open_date = pst.localize(datetime.combine(end_open_date, datetime(17, 0)))
+                start_merge_date = pst.localize(datetime.combine(start_merge_date, datetime.min.time()))
+                end_merge_date = pst.localize(datetime.combine(end_merge_date, datetime.max.time()))
+
+                if start_open_date <= opened_date <= end_open_date and start_merge_date <= merged_date <= end_merge_date:
                     merged_pull_requests.append(pr)
     return merged_pull_requests
     
