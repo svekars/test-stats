@@ -16,7 +16,7 @@ repositories = [
 label_points = {
     "easy": 2,
     "medium": 5,
-    "advanced": 15
+    "advanced": 10
 }
 
 manual_pull_requests = [
@@ -45,7 +45,7 @@ def get_pull_requests(owner, repo):
             merged_at = pr.get("merged_at")
             if merged_at:
                 merged_date = datetime.strptime(merged_at, "%Y-%m-%dT%H:%M:%SZ").date()
-                start_date = datetime(2022, 7, 22).date()
+                start_date = datetime(2022, 7, 18).date()
                 end_date = datetime(2023, 5, 1).date()
                 if start_date <= merged_date <= end_date:
                     merged_pull_requests.append(pr)
