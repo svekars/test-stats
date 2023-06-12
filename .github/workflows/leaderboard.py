@@ -61,7 +61,7 @@ def get_pull_requests(owner, repo):
                 start_merge_date = pst.localize(datetime.combine(start_merge_date, datetime.min.time()))
                 end_merge_date = pst.localize(datetime.combine(end_merge_date, datetime.max.time()))
 
-                if start_open_date <= opened_date <= end_open_date and start_merge_date <= merged_date <= end_merge_date:
+                if start_open_datetime <= opened_datetime <= end_open_datetime and start_merge_datetime <= merged_datetime <= end_merge_datetime:
                     merged_pull_requests.append(pr)
     return merged_pull_requests
     
