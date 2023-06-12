@@ -72,8 +72,9 @@ for repository in repositories:
             pr_url = pr["html_url"]
 
             if author in author_data:
-                author_data[author]["points"] += points
-                author_data[author]["pr_links"].append(pr_url)
+                if pr_url not in author_data[author]["pr_links"]:
+                    author_data[author]["points"] += points
+                    author_data[author]["pr_links"].append(pr_url)
             else:
                 author_data[author] = {"points": points, "pr_links": [pr_url]}
             
