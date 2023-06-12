@@ -49,7 +49,6 @@ def get_pull_requests(owner, repo):
                 end_date = datetime(2023, 5, 1).date()
                 if start_date <= merged_date <= end_date:
                     merged_pull_requests.append(pr)
-        merged_pull_requests += [pr for pr in pull_requests if pr.get("merged_at")]
     return merged_pull_requests
     
 author_data = {}
