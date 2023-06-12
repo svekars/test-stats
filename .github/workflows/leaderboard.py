@@ -3,7 +3,7 @@ import requests
 import csv
 from datetime import datetime
 from pytz import timezone
-
+import pytz
 
 token = os.environ.get("GITHUB_TOKEN")
 
