@@ -57,7 +57,7 @@ def get_pull_requests(owner, repo):
 
                 pst = timezone("US/Pacific")
                 start_open_datetime = pst.localize(datetime.combine(start_open_date, datetime.min.time()))
-                end_open_datetime = pst.localize(end_open_date)
+                end_open_datetime = pst.localize(datetime.combine(end_open_date, datetime.max.time()))
                 start_merge_datetime = pst.localize(datetime.combine(start_merge_date, datetime.min.time()))
                 end_merge_datetime = pst.localize(datetime.combine(end_merge_date, datetime.max.time()))
 
