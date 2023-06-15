@@ -1,5 +1,6 @@
 | Author | Points | PR |
 |--- | --- | ---|
+| JoseLuisC99 | 26 | https://github.com/pytorch/tutorials/pull/2468, https://github.com/pytorch/tutorials/pull/2404, https://github.com/pytorch/tutorials/pull/2403, https://github.com/pytorch/tutorials/pull/2372, https://github.com/pytorch/examples/pull/1163 | 
 | QasimKhan5x | 21 | https://github.com/pytorch/tutorials/pull/2452, https://github.com/pytorch/tutorials/pull/2419, https://github.com/pytorch/tutorials/pull/2408, https://github.com/pytorch/tutorials/pull/2397, https://github.com/pytorch/tutorials/pull/2385, https://github.com/pytorch/tutorials/pull/2383 | 
 | Aidyn-A | 15 | https://github.com/pytorch/tutorials/pull/2441 | 
 | CaoE | 15 | https://github.com/pytorch/tutorials/pull/2439 | 
@@ -10,7 +11,6 @@
 | noqqaqq | 7 | https://github.com/pytorch/tutorials/pull/2407, https://github.com/pytorch/tutorials/pull/2386 | 
 | zabboud | 7 | https://github.com/pytorch/tutorials/pull/2405, https://github.com/pytorch/tutorials/pull/2400 | 
 | kiersten-stokes | 7 | https://github.com/pytorch/tutorials/pull/2401, https://github.com/pytorch/tutorials/pull/2398 | 
-| JoseLuisC99 | 6 | https://github.com/pytorch/tutorials/pull/2404, https://github.com/pytorch/tutorials/pull/2403, https://github.com/pytorch/tutorials/pull/2372 | 
 | frasertajima | 6 | https://github.com/pytorch/tutorials/pull/2370, https://github.com/pytorch/tutorials/pull/2368, https://github.com/pytorch/tutorials/pull/2363 | 
 | nairbv | 5 | https://github.com/pytorch/tutorials/pull/2413 | 
 | arunppsg | 5 | https://github.com/pytorch/tutorials/pull/2384 | 
