@@ -15,7 +15,6 @@ jobs:
       - name: Install @octokit/core
         run: |
           npm i @octokit/core @octokit/rest
-          npm install cross-fetch
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v4
         env:
@@ -32,10 +31,10 @@ jobs:
                 auth: process.env.GITHUB_TOKEN,
               });
               try {
-              const { data: issue } = await octokit.rest.issues.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber
+                const { data: issue } = await octokit.rest.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
               });
               const hasLabel = issue.labels.some(label => label.name === 'test');
               if (hasLabel) {
