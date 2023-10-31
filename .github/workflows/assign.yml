@@ -15,7 +15,7 @@ jobs:
       - name: Install @octokit/core
         run: |
           npm i @octokit/core @octokit/rest
-          npm install node-fetch
+          npm install cross-fetch
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v4
         env:
@@ -31,7 +31,7 @@ jobs:
               const octokit = new Octokit({
                 auth: process.env.GITHUB_TOKEN,
                 request: {
-                  fetch: require('node-fetch'), // Use node-fetch as the fetch implementation
+                  fetch: require('cross-fetch'), // Use node-fetch as the fetch implementation
                 },
               });
               const { data: issue } = await octokit.issues.get({
