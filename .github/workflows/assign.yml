@@ -30,8 +30,7 @@ jobs:
               const octokit = new Octokit({
                 auth: process.env.GITHUB_TOKEN,
               });
-              try {
-                const { data: issue } = await octokit.rest.issues.get({
+              github.rest.issues.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issueNumber,
