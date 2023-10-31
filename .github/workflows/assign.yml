@@ -15,6 +15,7 @@ jobs:
       - name: Install @octokit/core
         run: |
           npm i @octokit/core @octokit/rest
+          npm install node-fetch
       - name: Check for "/assigntome" in comment
         uses: actions/github-script@v4
         env:
