@@ -29,6 +29,9 @@ jobs:
               const { Octokit } = require("@octokit/rest");
               const octokit = new Octokit({
                 auth: process.env.GITHUB_TOKEN,
+                request: {
+                  fetch: require('node-fetch'), // Use node-fetch as the fetch implementation
+                },
               });
               const { data: issue } = await octokit.issues.get({
                 owner: context.repo.owner,
