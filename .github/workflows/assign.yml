@@ -16,7 +16,7 @@ jobs:
         run: |
           npm i @octokit/core @octokit/rest
       - name: Check for "/assigntome" in comment
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         env:
           GITHUB_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
         with:
@@ -30,7 +30,7 @@ jobs:
               const octokit = new Octokit({
                 auth: process.env.GITHUB_TOKEN,
               });
-              github.rest.issues.get({
+              const { data: issue } = await octokit.rest.issues.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issueNumber,
