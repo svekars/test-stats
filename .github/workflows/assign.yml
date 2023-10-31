@@ -62,4 +62,8 @@ jobs:
                   body: commmentMessage
                 });
               }
+              } catch (error) {
+                // Handle errors
+                console.error(error);
+              }
             }
