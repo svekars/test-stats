@@ -5,6 +5,7 @@
 | markstur | 9 | https://github.com/pytorch/tutorials/pull/2643, https://github.com/pytorch/tutorials/pull/2638, https://github.com/pytorch/tutorials/pull/2636 | 
 | alperenunlu | 8 | https://github.com/pytorch/tutorials/pull/2673, https://github.com/pytorch/tutorials/pull/2660, https://github.com/pytorch/tutorials/pull/2656, https://github.com/pytorch/tutorials/pull/2649 | 
 | ChanBong | 7 | https://github.com/pytorch/tutorials/pull/2644, https://github.com/pytorch/tutorials/pull/2639 | 
+| leslie-fang-intel | 5 | https://github.com/pytorch/tutorials/pull/2668 | 
 | bjhargrave | 5 | https://github.com/pytorch/tutorials/pull/2661 | 
 | krishnakalyan3 | 5 | https://github.com/pytorch/tutorials/pull/2653 | 
 | Viditagarwal7479 | 2 | https://github.com/pytorch/tutorials/pull/2659 | 
