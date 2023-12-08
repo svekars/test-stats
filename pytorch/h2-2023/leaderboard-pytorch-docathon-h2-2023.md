@@ -2,6 +2,7 @@
 |--- | --- | ---|
 | ahoblitz | 14 | https://github.com/pytorch/tutorials/pull/2662, https://github.com/pytorch/tutorials/pull/2647, https://github.com/pytorch/tutorials/pull/2642, https://github.com/pytorch/tutorials/pull/2640 | 
 | spzala | 12 | https://github.com/pytorch/tutorials/pull/2667, https://github.com/pytorch/tutorials/pull/2635 | 
+| Hhhhhhao | 10 | https://github.com/pytorch/tutorials/pull/2676 | 
 | markstur | 9 | https://github.com/pytorch/tutorials/pull/2643, https://github.com/pytorch/tutorials/pull/2638, https://github.com/pytorch/tutorials/pull/2636 | 
 | alperenunlu | 8 | https://github.com/pytorch/tutorials/pull/2673, https://github.com/pytorch/tutorials/pull/2660, https://github.com/pytorch/tutorials/pull/2656, https://github.com/pytorch/tutorials/pull/2649 | 
 | ChanBong | 7 | https://github.com/pytorch/tutorials/pull/2644, https://github.com/pytorch/tutorials/pull/2639 | 
