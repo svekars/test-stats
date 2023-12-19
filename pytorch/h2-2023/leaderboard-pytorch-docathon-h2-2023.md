@@ -12,3 +12,4 @@
 | Viditagarwal7479 | 2 | https://github.com/pytorch/tutorials/pull/2659 | 
 | jingxu10 | 2 | https://github.com/pytorch/tutorials/pull/2657 | 
 | cirquit | 2 | https://github.com/pytorch/tutorials/pull/2529 | 
+| measty | 0 | https://github.com/pytorch/tutorials/pull/2675 | 
