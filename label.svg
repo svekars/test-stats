@@ -54,7 +54,7 @@
 	<text	x="245"	y="325" font-family="Helvetica"						lengthAdjust="spacingAndGlyphs"	text-anchor="end">%</text>
 	
 	<line	x1="15"	y1="335" x2="245" y2="335" style="stroke:rgb(0,0,0);stroke-width:2" />
-	<text	x="15"	y="355" font-family="Helvetica" font-weight="bold"	lengthAdjust="spacingAndGlyphs">{messageAPI</text>
+	<text	x="15"	y="355" font-family="Helvetica" font-weight="bold"	lengthAdjust="spacingAndGlyphs">Jupyter</text>
 	<text	x="75"	y="355" font-family="Helvetica" 						lengthAdjust="spacingAndGlyphs">0 KB</text>
 	<text	x="245"	y="355" font-family="Helvetica"						lengthAdjust="spacingAndGlyphs"	text-anchor="end">%</text>
 	
