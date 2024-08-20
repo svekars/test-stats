@@ -1,0 +1,24 @@
+name: Check Author Line
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+jobs:
+  check-author-line:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run author line check
+        run: |
+          missing_author_files=($(grep -rL '^\\*\\*Author:\\*\\* .*' --include='*.py' --include='*.rst' .))
+          if [ ${#missing_author_files[@]} -gt 0 ]; then
+            echo "##[error] The following files are missing the '**Author:**' line:"
+            printf '%s\n' "${missing_author_files[@]}"
+            echo "" 
+            echo "Please add the **Author:** line after the title. See the recommended template: https://github.com/pytorch/tutorials/blob/main/beginner_source/template_tutorial.py for reference."
+            exit 1
+          fi
