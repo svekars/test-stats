@@ -5,7 +5,6 @@
 | Aidyn-A | 15 | https://github.com/pytorch/tutorials/pull/2441 | 
 | CaoE | 15 | https://github.com/pytorch/tutorials/pull/2439 | 
 | Valentine233 | 15 | https://github.com/pytorch/tutorials/pull/2430 | 
-| leslie-fang-intel | 15 | https://github.com/pytorch/tutorials/pull/2354 | 
 | bjhargrave | 12 | https://github.com/pytorch/tutorials/pull/2428, https://github.com/pytorch/tutorials/pull/2424, https://github.com/pytorch/tutorials/pull/2423 | 
 | HemanthSai7 | 10 | https://github.com/pytorch/tutorials/pull/2392, https://github.com/pytorch/tutorials/pull/2375 | 
 | TheMemoryDealer | 9 | https://github.com/pytorch/tutorials/pull/2389, https://github.com/pytorch/tutorials/pull/2369, https://github.com/pytorch/tutorials/pull/2367 | 
