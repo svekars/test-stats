@@ -11,10 +11,10 @@
 | noqqaqq | 7 | https://github.com/pytorch/tutorials/pull/2407, https://github.com/pytorch/tutorials/pull/2386 | 
 | zabboud | 7 | https://github.com/pytorch/tutorials/pull/2405, https://github.com/pytorch/tutorials/pull/2400 | 
 | kiersten-stokes | 7 | https://github.com/pytorch/tutorials/pull/2401, https://github.com/pytorch/tutorials/pull/2398 | 
-| frasertajima | 6 | https://github.com/pytorch/tutorials/pull/2370, https://github.com/pytorch/tutorials/pull/2368, https://github.com/pytorch/tutorials/pull/2363 | 
 | nairbv | 5 | https://github.com/pytorch/tutorials/pull/2413 | 
 | arunppsg | 5 | https://github.com/pytorch/tutorials/pull/2384 | 
 | mikebrow | 5 | https://github.com/pytorch/tutorials/pull/2374 | 
+| frasertajima | 4 | https://github.com/pytorch/tutorials/pull/2370, https://github.com/pytorch/tutorials/pull/2368 | 
 | onurtore | 2 | https://github.com/pytorch/tutorials/pull/2458 | 
 | NM512 | 2 | https://github.com/pytorch/tutorials/pull/2451 | 
 | j3soon | 2 | https://github.com/pytorch/tutorials/pull/2420 | 
@@ -24,5 +24,3 @@
 | tcNickolas | 2 | https://github.com/pytorch/tutorials/pull/2378 | 
 | Suhas-G | 2 | https://github.com/pytorch/tutorials/pull/2371 | 
 | BeniaminC | 2 | https://github.com/pytorch/tutorials/pull/2366 | 
-| NeoKish | 2 | https://github.com/pytorch/tutorials/pull/2364 | 
-| fabiogomez11c | 2 | https://github.com/pytorch/tutorials/pull/2362 | 
