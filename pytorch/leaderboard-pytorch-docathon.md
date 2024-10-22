@@ -22,4 +22,3 @@
 | akjalok | 2 | https://github.com/pytorch/tutorials/pull/2380 | 
 | tcNickolas | 2 | https://github.com/pytorch/tutorials/pull/2378 | 
 | Suhas-G | 2 | https://github.com/pytorch/tutorials/pull/2371 | 
-| frasertajima | 2 | https://github.com/pytorch/tutorials/pull/2370 | 
