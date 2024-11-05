@@ -3,7 +3,6 @@
 | JoseLuisC99 | 20 | https://github.com/pytorch/tutorials/pull/2468, https://github.com/pytorch/examples/pull/1163 | 
 | Aidyn-A | 15 | https://github.com/pytorch/tutorials/pull/2441 | 
 | CaoE | 15 | https://github.com/pytorch/tutorials/pull/2439 | 
-| Valentine233 | 15 | https://github.com/pytorch/tutorials/pull/2430 | 
 | QasimKhan5x | 5 | https://github.com/pytorch/tutorials/pull/2452 | 
 | onurtore | 2 | https://github.com/pytorch/tutorials/pull/2458 | 
 | NM512 | 2 | https://github.com/pytorch/tutorials/pull/2451 | 
