@@ -1,3 +1,3 @@
 | Author | Points | PR |
 |--- | --- | ---|
-| JoseLuisC99 | 20 | https://github.com/pytorch/tutorials/pull/2468, https://github.com/pytorch/examples/pull/1163 | 
+| JoseLuisC99 | 15 | https://github.com/pytorch/examples/pull/1163 | 
