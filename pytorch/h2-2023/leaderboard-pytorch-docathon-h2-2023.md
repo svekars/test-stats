@@ -4,7 +4,5 @@
 | spzala | 10 | https://github.com/pytorch/tutorials/pull/2667 | 
 | hongxiayang | 5 | https://github.com/pytorch/tutorials/pull/2684 | 
 | leslie-fang-intel | 5 | https://github.com/pytorch/tutorials/pull/2668 | 
-| ahoblitz | 5 | https://github.com/pytorch/tutorials/pull/2662 | 
-| bjhargrave | 5 | https://github.com/pytorch/tutorials/pull/2661 | 
-| alperenunlu | 4 | https://github.com/pytorch/tutorials/pull/2673, https://github.com/pytorch/tutorials/pull/2660 | 
+| alperenunlu | 2 | https://github.com/pytorch/tutorials/pull/2673 | 
 | measty | 0 | https://github.com/pytorch/tutorials/pull/2675 | 
