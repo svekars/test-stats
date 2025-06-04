@@ -2,5 +2,4 @@
 |--- | --- | ---|
 | Hhhhhhao | 10 | https://github.com/pytorch/tutorials/pull/2676 | 
 | hongxiayang | 5 | https://github.com/pytorch/tutorials/pull/2684 | 
-| alperenunlu | 2 | https://github.com/pytorch/tutorials/pull/2673 | 
 | measty | 0 | https://github.com/pytorch/tutorials/pull/2675 | 
